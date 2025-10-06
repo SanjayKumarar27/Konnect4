@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PostService } from '../../services/post-service';
 import { Router } from '@angular/router';
 
@@ -6,18 +6,35 @@ import { Router } from '@angular/router';
   selector: 'app-post-create',
   templateUrl: './post-create.html',
   styleUrls: ['./post-create.css'],
-  standalone:false
+  standalone: false
 })
-export class PostCreateComponent {
+export class PostCreateComponent implements OnInit {
   content: string = '';
   imageUrl: string = '';
   previewUrl: string | null = null;
   selectedFile: File | null = null;
   remainingChars = 1000;
-  userId = 1; // replace with actual logged-in user id
+  userId!: number; // Will be loaded from localStorage
   avatarUrl = `https://ui-avatars.com/api/?name=User&background=0A66C2&color=fff`;
 
   constructor(private postService: PostService, private router: Router) {}
+
+  ngOnInit() {
+    this.loadUserId();
+  }
+
+  loadUserId() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      this.userId = user.userId;
+      console.log('Logged-in userId:', this.userId);
+    } else {
+      console.error('No user found in localStorage. Redirecting to login.');
+      // Optional: redirect to login page
+      // this.router.navigate(['/login']);
+    }
+  }
 
   onContentChange() {
     this.remainingChars = 1000 - (this.content?.length || 0);
@@ -58,10 +75,8 @@ export class PostCreateComponent {
   }
 
   onSubmit() {
-    if (!this.canPost()) return;
+    if (!this.canPost() || !this.userId) return;
 
-    // If you want to support file upload you'd need a backend endpoint that accepts multipart/form-data.
-    // For now we prefer using imageUrl if provided; if file selected, try to send base64 in the DTO (only if backend supports it).
     const dto: any = {
       userId: this.userId,
       content: this.content.trim(),
@@ -70,15 +85,15 @@ export class PostCreateComponent {
 
     this.postService.createPost(dto).subscribe({
       next: (res) => {
-        // reset form then navigate to feed or refresh
+        // Reset form
         this.content = '';
         this.imageUrl = '';
         this.previewUrl = null;
         this.selectedFile = null;
         this.onContentChange();
-        // Option A: navigate to feed
+
+        // Navigate to feed
         this.router.navigate(['/feed']);
-        // Option B: or emit an event to parent to refresh feed if you have an event mechanism
       },
       error: (err) => {
         console.error('Create post failed', err);

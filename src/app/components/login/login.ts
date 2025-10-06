@@ -22,26 +22,34 @@ export class Login implements OnInit {
       this.router.navigate(['/feed']);
     }
   }
+onLogin() {
+  // Clear previous error
+  this.errorMessage = '';
 
-  onLogin() {
-    // Clear previous error
-    this.errorMessage = '';
-    // Call AuthService login
-    this.authService.login({ email: this.email, password: this.password }).subscribe({
-      next: (response) => {
-        // Simulate login and store user data (replace with real API call)
-        localStorage.setItem('user', JSON.stringify({ email: this.email, username: this.email.split('@')[0] }));
-        console.log('Login:', { email: this.email, password: this.password });
-        console.log('Login successful, navigating to /home');
-        this.resetForm(); // Clear form fields
-        this.router.navigate(['/feed']);
-      },
-      error: (err) => {
-        this.errorMessage = 'Invalid email or password';
-        console.error('Login failed:', err);
-      }
-    });
-  }
+  // Call AuthService login
+  this.authService.login({ email: this.email, password: this.password }).subscribe({
+    next: (response: any) => {
+      // Store the user data including userId in localStorage
+      const user = response.user; // user returned from API
+      localStorage.setItem('user', JSON.stringify({
+        userId: user.userId,       // <- store userId
+        email: user.email,
+        username: user.username,
+        fullName: user.fullName
+      }));
+
+      console.log('Login successful:', user);
+      
+      this.resetForm(); // Clear form fields
+      this.router.navigate(['/feed']);
+    },
+    error: (err) => {
+      this.errorMessage = 'Invalid email or password';
+      console.error('Login failed:', err);
+    }
+  });
+}
+
 
   resetForm() {
     this.email = '';

@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { PostService } from '../../services/post-service';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PostService } from '../../services/post-service';
 
 @Component({
   selector: 'app-post-update',
@@ -8,20 +8,32 @@ import { Router } from '@angular/router';
   styleUrls: ['./post-update.css'],
   standalone: false
 })
-export class PostUpdate{
+export class PostUpdate implements OnInit {
   @Input() postId!: number; // passed from parent
-  @Input() userId!: number; // logged-in user
   @Input() username: string = ''; // display username
-  
+  userId!: number; // logged-in user
+
   content: string = '';
   imageUrl: string = '';
   previewUrl: string | null = null;
   selectedFile: File | null = null;
   remainingChars = 1000;
 
-  avatarUrl = `https://ui-avatars.com/api/?name=${this.username}&background=0A66C2&color=fff`;
+  avatarUrl: string = '';
 
   constructor(private postService: PostService, private router: Router) {}
+
+ngOnInit() {
+  const storedUser = localStorage.getItem('user');
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    this.userId = user.userId;
+  }
+
+  this.avatarUrl = `https://ui-avatars.com/api/?name=${this.username}&background=0A66C2&color=fff`;
+
+}
+
 
   onContentChange() {
     this.remainingChars = 1000 - (this.content?.length || 0);
@@ -56,11 +68,14 @@ export class PostUpdate{
   }
 
   canUpdate() {
-    return (this.content || '').trim().length > 0;
+    return (this.content || '').trim().length > 0 && this.postId && this.userId;
   }
 
   onUpdate() {
-    if (!this.canUpdate()) return;
+    if (!this.canUpdate()) {
+      alert('Cannot update post. Missing information.');
+      return;
+    }
 
     const dto: any = {
       content: this.content.trim(),

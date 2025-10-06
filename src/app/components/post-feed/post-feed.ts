@@ -9,13 +9,30 @@ import { PostService } from '../../services/post-service';
 })
 export class PostFeed implements OnInit {
   posts: any[] = [];
-  userId = 1; // Replace with logged-in user
+  userId!:number;  // Replace with logged-in user
 
   constructor(private postService: PostService) {}
 
-  ngOnInit() {
+ ngOnInit() {
+  this.loadUserId();
+}
+
+loadUserId() {
+  const storedUser = localStorage.getItem('user');
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    this.userId = user.userId;
+    console.log('Logged-in userId:', this.userId);
+
+    // Now load the feed
     this.loadFeed();
+  } else {
+    console.error('No user found in localStorage. Redirect to login.');
+    // Optional: redirect to login page
+    // window.location.href = '/login';
   }
+}
+
 
   loadFeed() {
     this.postService.getFeed(this.userId).subscribe((data: any[]) => {
