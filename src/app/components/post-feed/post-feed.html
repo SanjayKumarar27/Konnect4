@@ -53,7 +53,7 @@
 
 
 <!-- --------------------------------------------- -->
-<div class="feed-container">
+<!-- <div class="feed-container">
 
 
 
@@ -62,7 +62,7 @@
 
 
   <div *ngFor="let post of posts" class="post-card">
-    <!-- Header -->
+     Header 
     <div class="post-header">
       <img src="https://ui-avatars.com/api/?name={{post.username}}" class="avatar" />
       <div class="user-info">
@@ -70,7 +70,7 @@
         <span class="post-date">{{ post.createdAt | date:'short' }}</span>
       </div>
 
-      <!-- Options menu -->
+       Options menu 
       <div class="options">
         <i class="fa fa-ellipsis-h" (click)="post.showOptions = !post.showOptions"></i>
         <div class="options-menu" *ngIf="post.showOptions">
@@ -85,25 +85,25 @@
     </div>
 
 
-    <!-- Content -->
+    Content 
     <div class="post-content">
       <p>{{ post.content }}</p>
       <img *ngIf="post.imageUrl" [src]="post.imageUrl" class="post-image" />
     </div>
 
-    <!-- Actions -->
+    Actions 
     <div class="post-actions">
-      <!-- Like -->
+       Like 
       <button (click)="toggleLike(post)" [class.liked]="post.liked">
         <i class="fa fa-thumbs-up"></i> 
         Like <span *ngIf="post.likesCount > 0">({{ post.likesCount }})</span>
       </button>
 
-      <!-- Comment -->
+      Comment 
       <button [routerLink]="['/comments', post.postId]">
         <i class="fa fa-comment"></i>
         Comment <span *ngIf="post.commentsCount > 0">({{ post.commentsCount }})</span>
       </button>
     </div>
   </div>
-</div>
+</div> -->

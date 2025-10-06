@@ -1,15 +1,18 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<!-- <nav style="padding: 10px; background: #f5f5f5; border-bottom: 1px solid #ddd;">
-  <a routerLink="/feed" routerLinkActive="active" style="margin-right: 15px;">Feed</a>
-  <a routerLink="/create-post" routerLinkActive="active" style="margin-right: 15px;">Create Post</a>
-</nav> -->
-<app-topbar></app-topbar>
-<div class="flex flex-1">
-  <app-sidebar></app-sidebar>
-  <main class="flex-1 p-6">
-     <router-outlet></router-outlet>
-  </main>
+
+<!-- Show Topbar + Sidebar only if NOT login/register -->
+<div *ngIf="showLayout; else noLayout" class="h-screen flex flex-col">
+  <app-topbar></app-topbar>
+  <div class="flex flex-1">
+    <app-sidebar></app-sidebar>
+    <main class="flex-1 p-6 overflow-y-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>
 
-
+<!-- No layout for login/register -->
+<ng-template #noLayout>
+  <router-outlet></router-outlet>
+</ng-template>

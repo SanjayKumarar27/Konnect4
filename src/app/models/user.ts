@@ -30,3 +30,10 @@ export interface UserList {
   fullName: string;
   profileImageUrl?: string;
 }
+
+// models/user.ts
+export interface UserListS {
+  username: string;
+  fullName: string;
+  profileImageUrl?: string;
+}

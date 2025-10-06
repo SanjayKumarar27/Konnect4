@@ -18,5 +18,7 @@ export class SidebarComponent {
   goHome = () => { this.router.navigate(['/home']); }
   goCreatePost = () => { this.router.navigate(['/create-post']); }
   goSearch = () => { this.router.navigate(['/home']); }
-  logout = () => { alert('Logged out (frontend stub)'); this.router.navigate(['/']); }
+  logout = () => { 
+    localStorage.clear();
+    this.router.navigate(['/login']); }
 }

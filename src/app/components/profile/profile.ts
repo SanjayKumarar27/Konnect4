@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../../services/user';
@@ -8,8 +7,7 @@ import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
-  standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  standalone: false,
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],
   providers: [UserService]

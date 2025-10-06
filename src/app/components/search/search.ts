@@ -1,44 +1,36 @@
+// search.component.ts
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
-import { SearchService } from '../../services/search';
+import { Router } from '@angular/router';
 import { UserList } from '../../models/user';
+import { SearchService } from '../../services/search';
+
 
 @Component({
   selector: 'app-search',
-  standalone: false,
-  templateUrl: './search.html',
-  styleUrls: ['./search.css']
+  standalone:false,
+  templateUrl: './search.html'
 })
 export class SearchComponent {
   query: string = '';
   suggestions: UserList[] = [];
-  isFocused: boolean = false;  // Track focus state
 
   constructor(private searchService: SearchService, private router: Router) {}
 
-  onInput() {
-    this.searchService.getSuggestions(this.query).subscribe(list => {
-      this.suggestions = list;
+  onSearch() {
+    this.searchService.getSuggestions(this.query).subscribe(users => {
+      this.suggestions = users;
     });
   }
 
-  selectSuggestion(user: UserList) {
-    this.router.navigate(['/profile', user.userId]);
-    this.query = '';
-    this.suggestions = [];
-    this.isFocused = false; // hide suggestions after selection
+  
+  goToProfile(userId: number) {
+  if (!userId) {
+    console.error('Invalid userId:', userId);
+    
+    return; // Prevent navigation
   }
-
-  onFocus() {
-    this.isFocused = true;
-  }
-
-  onBlur() {
-    // Add a small timeout to allow clicking suggestions before hiding
-    setTimeout(() => {
-      this.isFocused = false;
-    }, 150);
-  }
+  this.router.navigate(['/profile', userId]);
+   this.query = ''; // clear input
+    this.suggestions = []; // hide dropdown
+}
 }

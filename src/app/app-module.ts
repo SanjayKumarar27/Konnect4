@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import {  PostCreateComponent } from './components/post-create/post-create';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PostFeed } from './components/post-feed/post-feed';
 import {  CommentsList } from './components/comment-list/comment-list';
 import { PostUpdate } from './components/post-update/post-update';
@@ -15,6 +15,8 @@ import { TopbarComponent } from './components/topbar/topbar';
 import { SidebarComponent } from './components/sidebar/sidebar';
 import { HomeComponent } from './components/home/home';
 import { SearchComponent } from './components/search/search';
+import { CommonModule } from '@angular/common';
+import { ProfileComponent } from './components/profile/profile';
 
 
 @NgModule({
@@ -29,7 +31,8 @@ import { SearchComponent } from './components/search/search';
     TopbarComponent,
     SidebarComponent,
     HomeComponent,
-    SearchComponent
+    SearchComponent,
+    ProfileComponent
 
 
   ],
@@ -37,6 +40,9 @@ import { SearchComponent } from './components/search/search';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
+    CommonModule
+
 
   ],
   providers: [
