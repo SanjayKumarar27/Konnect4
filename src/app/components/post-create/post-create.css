@@ -1,0 +1,155 @@
+.create-post-card {
+  background: #fff;
+  border: 1px solid #e1e4e8;
+  border-radius: 10px;
+  padding: 16px;
+  max-width: 700px;
+  margin: 0 auto 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.create-top {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 48px;
+}
+
+.create-input {
+  flex: 1;
+}
+
+.create-input textarea {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  padding: 10px 12px;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  font-size: 15px;
+  line-height: 1.4;
+  outline: none;
+  transition: border-color .15s;
+}
+
+.create-input textarea:focus {
+  border-color: #0a66c2;
+  box-shadow: 0 0 0 3px rgba(10,102,194,0.08);
+}
+
+.meta-row {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #777;
+}
+
+.chars {
+  color: #666;
+}
+
+/* Actions row */
+.create-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  gap: 12px;
+}
+
+.left-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.action-field input[type="text"] {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #e6e6e6;
+  min-width: 250px;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #e6e6e6;
+  background: #fafafa;
+  font-size: 14px;
+  color: #333;
+}
+
+.upload-btn input[type="file"] {
+  display: none;
+}
+
+.upload-btn .icon {
+  width: 16px;
+  height: 16px;
+  fill: #666;
+}
+
+/* Post button */
+.right-actions {
+  flex: 0 0 auto;
+}
+
+.post-btn {
+  background: #0a66c2;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.post-btn[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Image preview */
+.image-preview {
+  position: relative;
+  margin-top: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eaeaea;
+  max-height: 420px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.remove-preview {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.55);
+  border: none;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

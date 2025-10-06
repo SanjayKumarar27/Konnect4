@@ -1,0 +1,33 @@
+<div class="relative w-full max-w-md mx-auto group">
+  <!-- Search Input -->
+  <div class="relative flex items-center">
+    <!-- Search Icon: hides when typing -->
+    <i *ngIf="!query" 
+       class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 
+              group-hover:text-indigo-500 transition-all duration-300 pointer-events-none">
+    </i>
+
+    <input [(ngModel)]="query" (input)="onInput()" type="text"
+      placeholder="Search people, posts..."
+      class="w-full pl-10 pr-4 py-2 text-gray-800 bg-white rounded-full 
+             shadow-md border-2 border-transparent
+             focus:border-indigo-500 focus:ring-2 focus:ring-indigo-300
+             transition-all duration-300 ease-in-out
+             hover:scale-105 hover:shadow-xl hover:border-indigo-400"
+      (focus)="onFocus()" (blur)="onBlur()" />
+  </div>
+
+  <!-- Suggestions dropdown -->
+  <ul *ngIf="suggestions.length"
+      class="absolute left-0 right-0 mt-2 bg-white border rounded-xl shadow-2xl max-h-64 overflow-auto z-50 animate-slideDown">
+    <li *ngFor="let s of suggestions" (click)="selectSuggestion(s)"
+        class="p-2 hover:bg-indigo-50 cursor-pointer flex items-center gap-3 transition-all duration-300">
+      <img *ngIf="s.profileImageUrl" [src]="s.profileImageUrl"
+           class="w-8 h-8 rounded-full border border-indigo-300" />
+      <div>
+        <div class="font-semibold text-gray-800">{{ s.username }}</div>
+        <div class="text-sm text-gray-500">{{ s.fullName }}</div>
+      </div>
+    </li>
+  </ul>
+</div>

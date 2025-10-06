@@ -1,0 +1,12 @@
+<div class="comments-card">
+  <h3>Comments</h3>
+  <div *ngFor="let comment of comments" class="comment-item">
+    <b>{{ comment.username }}</b>
+    <p>{{ comment.content }}</p>
+  </div>
+
+  <form (ngSubmit)="addComment()" class="comment-form">
+    <input [(ngModel)]="newComment" name="comment" placeholder="Add a comment..." />
+    <button type="submit">Post</button>
+  </form>
+</div>

@@ -1,0 +1,49 @@
+<div class="max-w-5xl mx-auto py-6 px-4 space-y-6">
+
+  <!-- Home Feed Header -->
+  <div class="flex items-center justify-between bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 
+              text-white px-6 py-4 rounded-2xl shadow-lg animate-fadeIn">
+    <h2 class="text-2xl font-bold tracking-wide">Home Feed</h2>
+    <p class="text-sm opacity-90">Stay updated with the latest posts.</p>
+  </div>
+<app-post-feed></app-post-feed>
+  <!-- Posts Feed -->
+  <div *ngIf="posts?.length && posts.length > 0; else noPosts" class="space-y-4">
+    <div *ngFor="let post of posts"
+         class="bg-white p-5 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300 
+                transform hover:-translate-y-1 hover:scale-[1.01] animate-slideInUp">
+      
+      <!-- Post Header -->
+      <div class="flex items-center gap-4 mb-2">
+        <img *ngIf="post.userProfile?.profileImageUrl" 
+             [src]="post.userProfile?.profileImageUrl" 
+             class="w-10 h-10 rounded-full border border-indigo-300" />
+        <div>
+          <div class="font-semibold text-gray-800">
+            {{ post.userProfile?.username ?? 'Anonymous' }}
+          </div>
+          <div class="text-xs text-gray-400">
+            {{ post.createdAt | date:'medium' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Post Content -->
+      <div class="text-gray-700 text-sm mb-3">{{ post.content ?? '' }}</div>
+
+      <img *ngIf="post.imageUrl" 
+     [src]="post.imageUrl" 
+     class="mt-3 rounded-xl w-full max-h-80 object-contain shadow-sm" />
+
+
+    </div>
+  </div>
+
+  <!-- No posts placeholder -->
+  <ng-template #noPosts>
+    <div class="p-6 bg-white rounded-2xl shadow-md text-center text-gray-500 animate-fadeIn">
+      No posts to show. Start by creating your first post from the sidebar!
+    </div>
+  </ng-template>
+
+</div>

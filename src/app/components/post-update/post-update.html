@@ -1,0 +1,47 @@
+<div class="update-post-card">
+  <div class="header">
+    <img [src]="avatarUrl" alt="User Avatar" class="avatar" />
+    <div class="user-info">
+      <h4>{{ username }}</h4>
+      <span>Edit your post</span>
+    </div>
+  </div>
+
+  <form (ngSubmit)="onUpdate()">
+    <!-- Post Content -->
+    <textarea
+      [(ngModel)]="content"
+      name="content"
+      class="content-input"
+      maxlength="1000"
+      placeholder="What do you want to update?"
+      (input)="onContentChange()"
+    ></textarea>
+    <div class="char-count">{{ remainingChars }} characters left</div>
+
+    <!-- Image URL input -->
+    <input
+      type="text"
+      [(ngModel)]="imageUrl"
+      name="imageUrl"
+      class="image-url-input"
+      placeholder="Paste image URL"
+      (input)="onImageUrlChange()"
+    />
+
+    <!-- File Upload -->
+    <!-- <input type="file" (change)="onFileSelected($event)" /> -->
+
+    <!-- Preview -->
+    <div *ngIf="previewUrl" class="preview-container">
+      <img [src]="previewUrl" alt="Preview" />
+      <button type="button" class="clear-btn" (click)="clearImage()">✖</button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions">
+      <button type="submit" [disabled]="!canUpdate()">Update Post</button>
+      <button type="button" class="cancel-btn" (click)="cancelUpdate()">Cancel</button>
+    </div>
+  </form>
+</div>

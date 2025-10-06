@@ -1,0 +1,54 @@
+/* Fade In animation */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Slide Up animation for posts */
+@keyframes slideInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+.animate-slideInUp {
+  animation: slideInUp 0.5s ease-out;
+}
+
+/* Post card hover effect */
+div[class*="animate-slideInUp"]:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px) scale(1.01);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Post images - keep full image visible and smaller */
+img.object-contain {
+  width: 100%;           /* fill container width */
+  max-height: 320px;     /* reduced height for smaller display */
+  object-fit: contain;   /* keep full image visible without cropping */
+  border-radius: 0.75rem; /* matches rounded-xl */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: block;
+  margin: 0 auto;         /* center image inside card */
+  /* Removed hover transform */
+}
+
+/* Smooth transition for cards and shadows */
+div[class*="animate-slideInUp"] {
+  transition: all 0.3s ease-in-out;
+}

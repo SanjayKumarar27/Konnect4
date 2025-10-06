@@ -1,0 +1,31 @@
+<div class="jumbotron max-w-2xl mx-auto">
+  <h2 class="text-center mb-8">Register</h2>
+  <form (ngSubmit)="onRegister()" class="space-y-6">
+    <div>
+      <label for="username" class="block text-lg font-medium">Username</label>
+      <input id="username" type="text" [(ngModel)]="username" name="username" required
+             class="w-full px-4 py-3 mt-1 rounded-lg">
+    </div>
+    <div>
+      <label for="email" class="block text-lg font-medium">Email</label>
+      <input id="email" type="email" [(ngModel)]="email" name="email" required
+             class="w-full px-4 py-3 mt-1 rounded-lg">
+    </div>
+    <div>
+      <label for="password" class="block text-lg font-medium">Password</label>
+      <input id="password" type="password" [(ngModel)]="password" name="password" required
+             class="w-full px-4 py-3 mt-1 rounded-lg">
+    </div>
+    <button type="submit"
+            class="w-full text-white py-3 rounded-lg transition duration-300">
+      Register
+    </button>
+      <button type="button" (click)="resetForm()"
+            class="w-full mt-4 bg-gray-500 text-white py-3 rounded-lg transition duration-300">
+      Refresh
+    </button>
+  </form>
+  <p class="mt-6 text-center text-lg">
+    Already have an account? <a routerLink="/login">Login</a>
+  </p>
+</div>

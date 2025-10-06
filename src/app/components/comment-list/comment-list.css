@@ -1,0 +1,40 @@
+.comments-card {
+  background: #FFFFFF;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #E0E0E0;
+}
+
+.comment-item {
+  border-bottom: 1px solid #E0E0E0;
+  padding: 8px 0;
+}
+
+.comment-item b {
+  font-size: 14px;
+}
+
+.comment-item p {
+  margin: 2px 0 0 0;
+  font-size: 13px;
+  color: #5E5E5E;
+}
+
+.comment-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 8px;
+}
+
+.comment-form button {
+  background: #0A66C2;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+}

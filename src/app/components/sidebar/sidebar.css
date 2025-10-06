@@ -1,0 +1,23 @@
+/* Smooth width transition */
+aside {
+  transition: width 0.5s ease;
+}
+
+/* Align icons left and labels left in expanded sidebar */
+nav button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Icon hover scale + glow */
+.group:hover i {
+  transform: scale(1.3);
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 5px rgba(79, 70, 229, 0.8));
+}
+
+/* Tooltip slide-in */
+.group span.absolute {
+  pointer-events: none;
+}
