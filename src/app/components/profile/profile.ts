@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../../services/user';
+import { FollowService } from '../../services/follw-service';
 import { UserProfile, UpdateProfile } from '../../models/user';
-import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
-  standalone: false,
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],
-  providers: [UserService]
+  standalone: false
 })
 export class ProfileComponent implements OnInit {
   param: string | null = null;
@@ -20,9 +19,14 @@ export class ProfileComponent implements OnInit {
   saving = false;
   loading = true;
 
+  showEditForm = false;
+  isCurrentUser = false;
+  currentUserId: number = 0; // will be fetched from localStorage
+
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
+    private followService: FollowService,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
@@ -34,44 +38,23 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadCurrentUser();
     this.param = this.route.snapshot.paramMap.get('id');
-    if (!this.param) { this.loadById(1); return; }
 
-    const asNum = Number(this.param);
-    if (!isNaN(asNum) && asNum > 0) {
-      this.loadById(asNum);
-    } else {
-      // username provided -> attempt to resolve by checking users list and then checking IDs
-      this.userService.getUsersList().subscribe(list => {
-        const found = list.find(u => u.username.toLowerCase() === (this.param || '').toLowerCase());
-        if (found) {
-          this.findIdByUsername(this.param || '').then(id => {
-            if (id) this.loadById(id);
-            else { this.loading = false; alert('Could not resolve username to id'); }
-          });
-        } else {
-          this.loading = false;
-          alert('User not found in users list.');
-        }
-      }, err => { this.loading = false; alert('Unable to fetch user list'); });
+    const idToLoad = this.param ? Number(this.param) : this.currentUserId;
+    if (!isNaN(idToLoad) && idToLoad > 0) {
+      this.loadById(idToLoad);
     }
   }
 
-  async findIdByUsername(username: string): Promise<number | null> {
-    // Best-effort: probe small ID range. Replace with a backend endpoint if possible.
-    const MAX = 200;
-    for (let i = 1; i <= MAX; i++) {
-      try {
-        const resp: any = await lastValueFrom(this.userService.getUserById(i));
-        if (resp && ((resp.username && resp.username.toLowerCase() === username.toLowerCase())
-            || (resp.userId && resp.userId === i))) {
-          return resp.userId ?? i;
-        }
-      } catch (e) {
-        // ignore
-      }
+  loadCurrentUser() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      this.currentUserId = user.userId;
+    } else {
+      console.error('No user found in localStorage. Redirect to login.');
     }
-    return null;
   }
 
   loadById(id: number) {
@@ -79,35 +62,52 @@ export class ProfileComponent implements OnInit {
     this.userService.getUserProfile(id).subscribe(profile => {
       this.profile = profile;
       this.userId = id;
+      this.isCurrentUser = this.currentUserId === id;
+
+      // Patch edit form
       this.form.patchValue({
         fullName: profile.fullName,
         bio: profile.bio,
         profileImageUrl: profile.profileImageUrl,
         isPrivate: (profile as any).isPrivate ?? false
       });
+
       this.loading = false;
-    }, err => {
-      this.loading = false;
-      alert('Failed to load profile. Confirm id exists.');
     });
   }
 
+  toggleEdit() {
+    this.showEditForm = !this.showEditForm;
+  }
+
   save() {
-    if (!this.userId) { alert('User id not resolved. Cannot save.'); return; }
+    if (!this.userId) return;
     this.saving = true;
-    const dto: UpdateProfile = {
-      fullName: this.form.value.fullName,
-      bio: this.form.value.bio,
-      profileImageUrl: this.form.value.profileImageUrl,
-      isPrivate: this.form.value.isPrivate
-    };
+    const dto: UpdateProfile = this.form.value;
     this.userService.updateProfile(this.userId, dto).subscribe(res => {
       this.saving = false;
-      alert('Profile updated successfully.');
-      this.loadById(this.userId as number);
-    }, err => {
-      this.saving = false;
-      alert('Failed to update profile.');
+      this.showEditForm = false;
+      this.loadById(this.userId!);
+    });
+  }
+
+  follow() {
+    if (!this.userId || !this.profile) return;
+    this.followService.followUser(this.currentUserId, { targetUserId: this.userId }).subscribe(res => {
+      alert(res.message);
+      // Update profile object so template reacts
+      this.profile!.isFollowing = true;
+      this.profile!.followersCount++; // optional: increment followers count dynamically
+    });
+  }
+
+  unfollow() {
+    if (!this.userId || !this.profile) return;
+    this.followService.unfollowUser(this.currentUserId, { targetUserId: this.userId }).subscribe(res => {
+      alert(res.message);
+      // Update profile object so template reacts
+      this.profile!.isFollowing = false;
+      this.profile!.followersCount--; // optional: decrement followers count dynamically
     });
   }
 }

@@ -15,6 +15,7 @@ export interface UserProfile {
   followingCount: number;
   postsCount: number;
   posts: Post[];
+  isFollowing:boolean
 }
 
 export interface UpdateProfile {
@@ -22,6 +23,7 @@ export interface UpdateProfile {
   bio?: string | null;
   profileImageUrl?: string | null;
   isPrivate?: boolean | null;
+  
 }
 
 export interface UserList {

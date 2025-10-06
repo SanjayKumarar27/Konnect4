@@ -6,7 +6,6 @@ import { App } from './app';
 import {  PostCreateComponent } from './components/post-create/post-create';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PostFeed } from './components/post-feed/post-feed';
-import {  CommentsList } from './components/comment-list/comment-list';
 import { PostUpdate } from './components/post-update/post-update';
 import {  provideHttpClient } from '@angular/common/http';
 import { Login } from './components/login/login';
@@ -17,6 +16,7 @@ import { HomeComponent } from './components/home/home';
 import { SearchComponent } from './components/search/search';
 import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './components/profile/profile';
+import { CommentList } from './components/comment-list/comment-list';
 
 
 @NgModule({
@@ -26,13 +26,13 @@ import { ProfileComponent } from './components/profile/profile';
     Register,
     PostCreateComponent,
     PostFeed,
-    CommentsList,
     PostUpdate,
     TopbarComponent,
     SidebarComponent,
     HomeComponent,
     SearchComponent,
-    ProfileComponent
+    ProfileComponent,
+    CommentList
 
 
   ],

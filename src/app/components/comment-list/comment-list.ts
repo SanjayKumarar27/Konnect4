@@ -1,54 +1,91 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PostService } from '../../services/post-service';
 
 @Component({
   selector: 'app-comment-list',
-  standalone: false,
   templateUrl: './comment-list.html',
-  styleUrl: './comment-list.css'
+  styleUrls: ['./comment-list.css'],
+  standalone:false
 })
-export class CommentsList implements OnInit {
+export class CommentList implements OnInit {
   comments: any[] = [];
   newComment: string = '';
-  postId!: number;
-  userId!: number; // Will be loaded from localStorage
+  userId!: number;
+  
+  @Input() postId!: number; 
+   @Input() postOwnerId!: number; 
+   @Output() commentsChanged = new EventEmitter<number>(); // <-- emit to parent
 
-  constructor(private route: ActivatedRoute, private postService: PostService) {}
+  constructor(private postService: PostService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadUserId();
-    this.postId = Number(this.route.snapshot.paramMap.get('postId'));
-    console.log('Post ID:', this.postId);
+
+    if (this.postId) {
+      console.log('Post ID from parent:', this.postId);
+      this.loadComments();
+    }
   }
 
-  loadUserId() {
+  private loadUserId(): void {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const user = JSON.parse(storedUser);
       this.userId = user.userId;
       console.log('Logged-in userId:', this.userId);
-    } else {
-      console.error('No user found in localStorage. Redirecting to login.');
-      // Optional: redirect to login
-      // window.location.href = '/login';
     }
   }
 
-  loadComments() {
+  loadComments(): void {
     if (!this.postId) return;
-    this.postService.getComments(this.postId).subscribe((data: any[]) => {
-      this.comments = data;
+    this.postService.getComments(this.postId).subscribe({
+      next: (data: any[]) => {
+        this.comments = data;
+         this.commentsChanged.emit(this.comments.length); // notify parent
+      },
+      error: (err) => {
+        console.error('Failed to load comments:', err);
+      }
     });
   }
 
-  addComment() {
-    if (!this.userId || !this.newComment.trim()) return;
+  addComment(): void {
+    const trimmedComment = this.newComment.trim();
+    if (!this.userId || !trimmedComment) return;
 
-    const dto = { postId: this.postId, userId: this.userId, content: this.newComment.trim() };
-    this.postService.addComment(dto).subscribe(() => {
-      this.newComment = '';
-      this.loadComments();
+    const dto = {
+      postId: this.postId,
+      userId: this.userId,
+      content: trimmedComment
+    };
+
+    this.postService.addComment(dto).subscribe({
+      next: () => {
+        this.newComment = '';
+        this.loadComments(); // reload after posting
+      },
+      error: (err) => {
+        console.error('Failed to add comment:', err);
+      }
+    });
+  }
+  canDeleteComment(comment: any): boolean {
+  const storedUser = localStorage.getItem('user');
+  if (!storedUser) return false;
+
+  const userId = JSON.parse(storedUser).userId;
+  // Only allow deleting own comments
+  return comment.userId === userId;
+}
+
+
+  // Delete comment
+  deleteComment(commentId: number): void {
+    if (!confirm('Are you sure you want to delete this comment?')) return;
+
+    this.postService.deleteComment(commentId, this.userId).subscribe({
+      next: () => this.loadComments(),
+      error: (err) => alert(err.error || 'Failed to delete comment')
     });
   }
 }

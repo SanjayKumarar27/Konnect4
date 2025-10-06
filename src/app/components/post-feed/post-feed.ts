@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { PostService } from '../../services/post-service';
 
 @Component({
@@ -9,13 +9,31 @@ import { PostService } from '../../services/post-service';
 })
 export class PostFeed implements OnInit {
   posts: any[] = [];
+    commentsComponent!:any;
   userId!:number;  // Replace with logged-in user
 
-  constructor(private postService: PostService) {}
+  constructor(private postService: PostService,private injector: Injector) {}
+   toggleComments(post: any) {
+    post.showComments = !post.showComments;
+  }
+
+  createInjector(postId: number) {
+    return Injector.create({
+      providers: [
+        { provide: 'POST_ID', useValue: postId }
+      ],
+      parent: this.injector
+    });
+  }
 
  ngOnInit() {
   this.loadUserId();
 }
+
+updateCommentsCount(post: any, newCount: number) {
+  post.commentsCount = newCount;
+}
+
 
 loadUserId() {
   const storedUser = localStorage.getItem('user');
@@ -62,11 +80,31 @@ loadUserId() {
   //     });
   //   }
   // }
-  deletePost(postId: number) {
-  this.postService.deletepost(postId, this.userId).subscribe(() => {
-    this.posts = this.posts.filter(p => p.postId !== postId);
+deletePost(postId: number) {
+  const user = localStorage.getItem('user');
+  if (!user) { alert('User not logged in'); return; }
+  const currentUserId = JSON.parse(user).userId;
+
+  this.postService.deletepost(postId, currentUserId).subscribe({
+    next: (res: any) => {
+      alert(res.message || 'Post deleted successfully.');
+      // Remove the post from the UI
+      this.posts = this.posts.filter(p => p.postId !== postId);
+    },
+    error: (err: any) => {
+      console.error(err);
+      // Check if it's 401 Unauthorized
+      if (err.status === 401) {
+        alert(err.error || 'You cannot delete others post!');
+      } else if (err.status === 404) {
+        alert(err.error || 'Post not found!');
+      } else {
+        alert('Something went wrong while deleting the post.');
+      }
+    }
   });
 }
+
 
 
 editPost(postId: number) {

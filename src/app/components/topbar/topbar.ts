@@ -15,12 +15,26 @@ import { SearchService } from '../../services/search';
 export class TopbarComponent {
   query = '';
   suggestions: UserList[] = [];
+  userId!:number;
   private q$ = new Subject<string>();
 
   constructor(private searchService: SearchService, private router: Router) {
     this.q$.pipe(debounceTime(250)).subscribe(q => this.fetch(q));
+    this.loadUserId();
   }
+  loadUserId() {
+  const storedUser = localStorage.getItem('user');
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    this.userId = user.userId;
+    console.log('Logged-in userId:', this.userId);
 
+  } else {
+    console.error('No user found in localStorage. Redirect to login.');
+    // Optional: redirect to login page
+    // window.location.href = '/login';
+  }
+}
   onInput() {
     this.q$.next(this.query);
   }

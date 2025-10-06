@@ -33,6 +33,10 @@ export class PostService {
   getComments(postId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/comments/post/${postId}`);
   }
+ deleteComment(commentId: number, userId: number): Observable<any> {
+    // Pass userId as query parameter
+    return this.http.delete<any>(`${this.apiUrl}/${commentId}?userId=${userId}`);
+  }
 
   addComment(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/comments`, data);

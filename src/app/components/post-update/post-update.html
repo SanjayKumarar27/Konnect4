@@ -1,47 +1,60 @@
-<div class="update-post-card">
-  <div class="header">
-    <img [src]="avatarUrl" alt="User Avatar" class="avatar" />
-    <div class="user-info">
-      <h4>{{ username }}</h4>
-      <span>Edit your post</span>
+<div class="create-post-card">
+  <!-- Top Section -->
+  <div class="create-top">
+    <img class="avatar" [src]="avatarUrl" alt="avatar" />
+    <div class="create-input">
+      <textarea
+        [(ngModel)]="content"
+        name="content"
+        maxlength="1000"
+        placeholder="What do you want to talk about?"
+        (input)="onContentChange()"
+      ></textarea>
+
+      <div class="meta-row">
+        <span class="chars">{{ remainingChars }} characters left</span>
+      </div>
     </div>
   </div>
 
-  <form (ngSubmit)="onUpdate()">
-    <!-- Post Content -->
-    <textarea
-      [(ngModel)]="content"
-      name="content"
-      class="content-input"
-      maxlength="1000"
-      placeholder="What do you want to update?"
-      (input)="onContentChange()"
-    ></textarea>
-    <div class="char-count">{{ remainingChars }} characters left</div>
+  <!-- Actions -->
+  <div class="create-actions">
+    <div class="left-actions">
+      <!-- Image URL field -->
+      <div class="action-field">
+        <input
+          type="text"
+          [(ngModel)]="imageUrl"
+          name="imageUrl"
+          placeholder="Image URL (optional)"
+          (input)="onImageUrlChange()"
+        />
+      </div>
 
-    <!-- Image URL input -->
-    <input
-      type="text"
-      [(ngModel)]="imageUrl"
-      name="imageUrl"
-      class="image-url-input"
-      placeholder="Paste image URL"
-      (input)="onImageUrlChange()"
-    />
-
-    <!-- File Upload -->
-    <!-- <input type="file" (change)="onFileSelected($event)" /> -->
-
-    <!-- Preview -->
-    <div *ngIf="previewUrl" class="preview-container">
-      <img [src]="previewUrl" alt="Preview" />
-      <button type="button" class="clear-btn" (click)="clearImage()">✖</button>
+      <!-- Optional: file upload (disabled for now) -->
+      <!-- 
+      <label class="upload-btn">
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+        <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+          <path
+            d="M5 20h14v-2H5v2zm7-18L5.33 9h3.67v6h6V9h3.67L12 2z"
+          ></path>
+        </svg>
+        Add image
+      </label>
+      -->
     </div>
 
-    <!-- Action Buttons -->
-    <div class="actions">
-      <button type="submit" [disabled]="!canUpdate()">Update Post</button>
-      <button type="button" class="cancel-btn" (click)="cancelUpdate()">Cancel</button>
+    <div class="right-actions">
+      <button class="post-btn" [disabled]="!canUpdate()" (click)="onSubmit()">
+        Update
+      </button>
     </div>
-  </form>
+  </div>
+
+  <!-- Image Preview -->
+  <div class="image-preview" *ngIf="previewUrl">
+    <img [src]="previewUrl" alt="preview" />
+    <button class="remove-preview" (click)="clearImage()">✕</button>
+  </div>
 </div>

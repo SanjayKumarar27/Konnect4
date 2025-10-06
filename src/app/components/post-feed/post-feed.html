@@ -1,11 +1,14 @@
- <div *ngIf="posts?.length && posts.length > 0;"class="space-y-4">
-    <div *ngFor="let post of posts"
-         class="bg-white p-5 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300 
-                transform hover:-translate-y-1 hover:scale-[1.01] animate-slideInUp">
-      
-      <!-- Post Header -->
-      <div class="flex items-center gap-4 mb-2">
-               <img   class="w-10 h-10 rounded-full border border-indigo-300"  src="https://ui-avatars.com/api/?name={{post.username}}" class="avatar" />
+<div *ngIf="posts?.length && posts.length > 0;" class="space-y-4 w-full max-w-2xl mt-10 ">
+  
+  <div *ngFor="let post of posts"
+       class="bg-white p-5 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300 
+              transform hover:-translate-y-1 hover:scale-[1.01] animate-slideInUp">
+    
+    <!-- Post Header -->
+    <div class="flex items-center mb-2 justify-between">
+      <div class="flex items-center mb-2 ">
+        <img class="w-10 h-10 rounded-full border border-indigo-300"
+             src="https://ui-avatars.com/api/?name={{post.username}}" [routerLink]="['/profile',post.postUserId]" />
         <div>
           <div class="font-semibold text-gray-800">
             {{ post.username ?? 'Anonymous' }}
@@ -13,97 +16,48 @@
           <div class="text-xs text-gray-400">
             {{ post.createdAt | date:'medium' }}
           </div>
-        </div>
-        <div class="options">
-          <i class="fa fa-ellipsis-h" (click)="post.showOptions = !post.showOptions"></i>
-          <div class="options-menu" *ngIf="post.showOptions">
-            <button (click)="editPost(post.postId)">
-              <i class="fa fa-edit"></i> Edit
-            </button>
-            <button (click)="deletePost(post.postId)">
-              <i class="fa fa-trash"></i> Delete
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Post Content -->
-      <div class="text-gray-700 text-sm mb-3">{{ post.content ?? '' }}</div>
-
-      <img *ngIf="post.imageUrl" 
-     [src]="post.imageUrl" 
-     class="mt-3 rounded-xl w-full max-h-80 object-contain shadow-sm" />
-       <div class="post-actions">
-      <!-- Like -->
-      <button (click)="toggleLike(post)" [class.liked]="post.liked">
-        <i class="fa fa-thumbs-up"></i> 
-        Like <span *ngIf="post.likesCount > 0">({{ post.likesCount }})</span>
-      </button>
-
-      <!-- Comment -->
-      <button [routerLink]="['/comments', post.postId]">
-        <i class="fa fa-comment"></i>
-        Comment <span *ngIf="post.commentsCount > 0">({{ post.commentsCount }})</span>
-      </button>
-
-    </div>
-  </div>
-
-
-
-
-
-<!-- --------------------------------------------- -->
-<!-- <div class="feed-container">
-
-
-
-
-
-
-
-  <div *ngFor="let post of posts" class="post-card">
-     Header 
-    <div class="post-header">
-      <img src="https://ui-avatars.com/api/?name={{post.username}}" class="avatar" />
-      <div class="user-info">
-        <h4>{{ post.username }}</h4>
-        <span class="post-date">{{ post.createdAt | date:'short' }}</span>
+        </div>  
       </div>
 
-       Options menu 
-      <div class="options">
-        <i class="fa fa-ellipsis-h" (click)="post.showOptions = !post.showOptions"></i>
-        <div class="options-menu" *ngIf="post.showOptions">
-          <button (click)="editPost(post.postId)">
-            <i class="fa fa-edit"></i> Edit
-          </button>
-          <button (click)="deletePost(post.postId)">
+      <!-- Options -->
+      <div class="options relative">
+        <i class="fa fa-ellipsis-h cursor-pointer" (click)="post.showOptions = !post.showOptions"></i>
+        <div class="absolute right-0 bg-white shadow rounded-md mt-2" *ngIf="post.showOptions">
+          <button (click)="deletePost(post.postId)" class="px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left">
             <i class="fa fa-trash"></i> Delete
           </button>
         </div>
       </div>
     </div>
 
+    <!-- Post Content -->
+    <div class="text-gray-700 text-sm mb-3">{{ post.content ?? '' }}</div>
 
-    Content 
-    <div class="post-content">
-      <p>{{ post.content }}</p>
-      <img *ngIf="post.imageUrl" [src]="post.imageUrl" class="post-image" />
+    <img *ngIf="post.imageUrl" 
+         [src]="post.imageUrl" 
+         class="mt-3 rounded-xl w-full max-h-80 object-contain shadow-sm" />
+
+    <!-- Post Actions -->
+    <div class="post-actions mt-3 flex gap-4">
+      <!-- Like -->
+      <button (click)="toggleLike(post)" [class.liked]="post.liked" class="flex items-center gap-1">
+        <i class="fa fa-thumbs-up"></i> 
+        Like <span *ngIf="post.likesCount > 0">{{ post.likesCount }}</span>
+      </button>
+
+      <!-- Comment -->
+      <button (click)="toggleComments(post)" class="flex items-center gap-1">
+        <i class="fa fa-comment"></i>
+        Comment <span *ngIf="post.commentsCount > 0">{{ post.commentsCount }}</span>
+      </button>
     </div>
 
-    Actions 
-    <div class="post-actions">
-       Like 
-      <button (click)="toggleLike(post)" [class.liked]="post.liked">
-        <i class="fa fa-thumbs-up"></i> 
-        Like <span *ngIf="post.likesCount > 0">({{ post.likesCount }})</span>
-      </button>
-
-      Comment 
-      <button [routerLink]="['/comments', post.postId]">
-        <i class="fa fa-comment"></i>
-        Comment <span *ngIf="post.commentsCount > 0">({{ post.commentsCount }})</span>
-      </button>
+    <!-- Comments Section (Only when clicked) -->
+    <div *ngIf="post.showComments" class="mt-4 border-t pt-3">
+      <app-comment-list 
+      [postId]="post.postId"
+      [postOwnerId]="post.userId" 
+        (commentsChanged)="updateCommentsCount(post, $event)" ></app-comment-list>
     </div>
   </div>
-</div> -->
+</div>

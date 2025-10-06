@@ -9,9 +9,11 @@ import { AuthService } from '../../services/auth.service';
   standalone: false
 })
 export class Register implements OnInit {
+  fullName:string='';
   username: string = '';
   email: string = '';
   password: string = '';
+  showPopup:boolean=false;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -26,10 +28,12 @@ export class Register implements OnInit {
 
   onRegister() {
     // Simulate registration and store user data (replace with real API call)
-    this.authService.register({ username: this.username, email: this.email, password: this.password }).subscribe({
+    this.authService.register({ username: this.username,fullName: this.fullName, email: this.email, password: this.password }).subscribe({
       next: (response) => {
+           console.log('Login successful:', response);
+            this.showPopup = true;
         // Removed localStorage.setItem('user', ...) to prevent auto-login after registration
-        console.log('Register:', { username: this.username, email: this.email, password: this.password });
+        console.log('Register:', { username: this.username,fullName: this.fullName, email: this.email, password: this.password });
         console.log('Registration successful, navigating to /login');
         this.resetForm(); // Clear form fields
         this.router.navigate(['/login']);

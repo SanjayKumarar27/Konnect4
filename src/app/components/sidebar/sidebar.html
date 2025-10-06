@@ -1,37 +1,32 @@
 <aside [ngClass]="open ? 'w-64' : 'w-16'" 
-       class="bg-white border-r border-gray-200 min-h-screen shadow-lg transition-all duration-500 relative flex flex-col">
+       class="bg-white border-r border-gray-200 min-h-screen shadow-lg transition-all duration-500 flex flex-col fixed top-20 left-0 z-50">
 
-  <!-- Header with toggle button on the right -->
-<div class="flex items-center justify-end p-3 border-b border-gray-200">
-  <!-- Toggle button -->
-  <button class="p-2 rounded-full hover:bg-indigo-600 hover:text-white transition-colors duration-300 shadow"
-          (click)="toggle()">
-    <i class="fa" [ngClass]="open ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
-  </button>
+  <!-- Header with toggle button -->
+  <div class="flex items-center justify-end p-3 border-b border-gray-200">
+    <button class="p-2 rounded-full hover:bg-indigo-600 hover:text-white transition-colors duration-300 shadow"
+            (click)="toggle()">
+      <i class="fa" [ngClass]="open ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
+    </button>
   </div>
 
-  <!-- Navigation buttons {icon:'fa-search', label:'Search', action: goSearch}, -->
-  <nav class="flex-1 flex flex-col mt-6 gap-3">
+  <!-- Navigation -->
+  <nav class="flex-1 flex flex-col mt-6 gap-3 overflow-y-auto">
     <ng-container *ngFor="let item of [
       {icon:'fa-home', label:'Home', action: goHome},
       {icon:'fa-plus-circle', label:'Create Post', action: goCreatePost},
-     
       {icon:'fa-sign-out-alt', label:'Logout', action: logout}
     ]">
       <button class="group relative flex items-center w-full px-4 py-3 rounded-lg 
                      transition-all duration-300 hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-indigo-500 text-gray-600 shadow"
               (click)="item.action()">
         
-        <!-- Icon -->
         <i class="fa {{item.icon}} text-lg transition-transform duration-300 group-hover:scale-125 group-hover:text-white"></i>
 
-        <!-- Label (only visible when expanded) -->
         <span *ngIf="open" 
               class="ml-4 font-medium text-gray-700 group-hover:text-white transition-all duration-300">
           {{item.label}}
         </span>
 
-        <!-- Tooltip for collapsed sidebar -->
         <span *ngIf="!open"
               class="absolute left-full top-1/2 -translate-y-1/2 ml-2 bg-indigo-600 text-white text-xs font-medium rounded px-2 py-1 shadow-lg 
                      opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300 whitespace-nowrap">

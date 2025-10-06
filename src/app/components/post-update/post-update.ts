@@ -1,64 +1,79 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../../services/post-service';
 
 @Component({
   selector: 'app-post-update',
   templateUrl: './post-update.html',
   styleUrls: ['./post-update.css'],
-  standalone: false
+  standalone:false
 })
 export class PostUpdate implements OnInit {
-  @Input() postId!: number; // passed from parent
-  @Input() username: string = ''; // display username
-  userId!: number; // logged-in user
-
   content: string = '';
   imageUrl: string = '';
   previewUrl: string | null = null;
   selectedFile: File | null = null;
   remainingChars = 1000;
 
-  avatarUrl: string = '';
+  userId!: number;
+  postId!: number;
+  avatarUrl = `https://ui-avatars.com/api/?name=User&background=0A66C2&color=fff`;
 
-  constructor(private postService: PostService, private router: Router) {}
+  constructor(
+    private postService: PostService,
+    private router: Router,
+    private route: ActivatedRoute   // ✅ injected properly
+  ) {}
 
-ngOnInit() {
-  const storedUser = localStorage.getItem('user');
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    this.userId = user.userId;
+  ngOnInit() {
+    this.loadUserId();
+
+    // ✅ Get postId from URL
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.postId = Number(id);
+      // this.loadPost(this.postId);
+    }
   }
 
-  this.avatarUrl = `https://ui-avatars.com/api/?name=${this.username}&background=0A66C2&color=fff`;
+  loadUserId() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      this.userId = user.userId;
+    }
+  }
 
-}
-
+  // ✅ Load existing post into form
+  // loadPost(postId: number) {
+  //   this.postService.getPostById(postId).subscribe(post => {
+  //     this.content = post.content;
+  //     this.imageUrl = post.imageUrl;
+  //     this.previewUrl = post.imageUrl;
+  //     this.onContentChange();
+  //   });
+  // }
 
   onContentChange() {
     this.remainingChars = 1000 - (this.content?.length || 0);
   }
 
   onImageUrlChange() {
-    if (this.imageUrl) {
-      this.previewUrl = this.imageUrl;
-    } else if (!this.selectedFile) {
-      this.previewUrl = null;
-    }
+    this.previewUrl = this.imageUrl || null;
   }
 
   onFileSelected(event: any) {
     const file: File = event.target.files && event.target.files[0];
     if (!file) return;
-    this.selectedFile = file;
 
+    this.selectedFile = file;
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.previewUrl = e.target.result;
     };
     reader.readAsDataURL(file);
 
-    this.imageUrl = '';
+    this.imageUrl = ''; // clear URL input when file is chosen
   }
 
   clearImage() {
@@ -68,14 +83,11 @@ ngOnInit() {
   }
 
   canUpdate() {
-    return (this.content || '').trim().length > 0 && this.postId && this.userId;
+    return (this.content || '').trim().length > 0;
   }
 
-  onUpdate() {
-    if (!this.canUpdate()) {
-      alert('Cannot update post. Missing information.');
-      return;
-    }
+  onSubmit() {
+    if (!this.canUpdate() || !this.userId || !this.postId) return;
 
     const dto: any = {
       content: this.content.trim(),
@@ -83,18 +95,14 @@ ngOnInit() {
     };
 
     this.postService.updatePost(this.postId, dto, this.userId).subscribe({
-      next: (res) => {
-        alert('Post updated successfully!');
+      next: () => {
+        alert('Post updated!');
         this.router.navigate(['/feed']);
       },
       error: (err) => {
-        console.error('Update failed', err);
-        alert('Failed to update post.');
+        console.error('Update post failed', err);
+        alert('Failed to update post. Try again.');
       }
     });
-  }
-
-  cancelUpdate() {
-    this.router.navigate(['/feed']);
   }
 }

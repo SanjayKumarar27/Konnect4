@@ -1,12 +1,27 @@
-<div class="comments-card">
-  <h3>Comments</h3>
-  <div *ngFor="let comment of comments" class="comment-item">
-    <b>{{ comment.username }}</b>
-    <p>{{ comment.content }}</p>
-  </div>
+<div class="bg-white p-4 rounded-lg border border-gray-200 shadow-md w-full max-w-2xl mx-auto">
+  <h3 class="text-lg font-semibold text-gray-800 mb-3"></h3>
+  
+    <form (ngSubmit)="addComment()" class="flex gap-2 mt-3">
+      <input [(ngModel)]="newComment" 
+             name="comment" 
+             placeholder="Add a comment..." 
+             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+  
+      <button type="submit" 
+              class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md shadow">
+        Post
+      </button>
+    </form>
 
-  <form (ngSubmit)="addComment()" class="comment-form">
-    <input [(ngModel)]="newComment" name="comment" placeholder="Add a comment..." />
-    <button type="submit">Post</button>
-  </form>
+  <div *ngFor="let comment of comments" class="border-b border-gray-200 py-2">
+    <b class="text-sm text-gray-900">{{ comment.username }}</b>
+    <button *ngIf="canDeleteComment(comment)" 
+        (click)="deleteComment(comment.commentId)" 
+        style="color:red; background:yellow; padding:4px;" value="Delete">
+  <i class="fa fa-trash">Delete</i>
+</button>
+    <p class="mt-1 text-sm text-gray-600">{{ comment.content }}</p>
+
+
+  </div>
 </div>

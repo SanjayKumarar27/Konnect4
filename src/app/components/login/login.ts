@@ -1,3 +1,4 @@
+//Login.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -12,6 +13,7 @@ export class Login implements OnInit {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
+  showPopup:boolean=false;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -22,14 +24,14 @@ export class Login implements OnInit {
       this.router.navigate(['/feed']);
     }
   }
-onLogin() {
-  // Clear previous error
-  this.errorMessage = '';
 
-  // Call AuthService login
-  this.authService.login({ email: this.email, password: this.password }).subscribe({
-    next: (response: any) => {
-      // Store the user data including userId in localStorage
+  onLogin() {
+    // Clear previous error
+    this.errorMessage = '';
+    // Call AuthService login
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: (response) => {
+       // Store the user data including userId in localStorage
       const user = response.user; // user returned from API
       localStorage.setItem('user', JSON.stringify({
         userId: user.userId,       // <- store userId
@@ -43,13 +45,12 @@ onLogin() {
       this.resetForm(); // Clear form fields
       this.router.navigate(['/feed']);
     },
-    error: (err) => {
-      this.errorMessage = 'Invalid email or password';
-      console.error('Login failed:', err);
-    }
-  });
-}
-
+      error: (err) => {
+        this.errorMessage = 'Invalid email or password';
+        console.error('Login failed:', err);
+      }
+    });
+  }
 
   resetForm() {
     this.email = '';
