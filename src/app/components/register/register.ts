@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 ; // Adjust path as needed
 
 @Component({
@@ -9,14 +10,29 @@ import { AuthService } from '../../services/auth.service';
   standalone: false
 })
 export class Register implements OnInit {
-  fullName:string='';
+  registerForm: FormGroup;
+  fullName: string = '';
   username: string = '';
   email: string = '';
   password: string = '';
-  showPopup:boolean=false;
+  errorMessage: string = '';
+  showPopup: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  @ViewChild('registerForm') form: NgForm | undefined;
 
+  get fullNameControl() { return this.registerForm.get('fullName')!; }
+  get usernameControl() { return this.registerForm.get('username')!; }
+  get emailControl() { return this.registerForm.get('email')!; }
+  get passwordControl() { return this.registerForm.get('password')!; }
+
+  constructor(private router: Router, private authService: AuthService) {
+    this.registerForm = new FormGroup({
+      fullName: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)])
+    });
+  }
   ngOnInit() {
     // Redirect to home if already logged in
     console.log('Register ngOnInit: isAuthenticated =', this.authService.isAuthenticated());
@@ -26,21 +42,25 @@ export class Register implements OnInit {
     }
   }
 
-  onRegister() {
-    // Simulate registration and store user data (replace with real API call)
-    this.authService.register({ username: this.username,fullName: this.fullName, email: this.email, password: this.password }).subscribe({
+    onRegister(form: NgForm) {
+    if (!form.valid) {
+      this.errorMessage = 'Please fix the errors in the form';
+      return;
+    }
+
+    this.errorMessage = '';
+    this.authService.register({ username: this.username, fullName: this.fullName, email: this.email, password: this.password }).subscribe({
       next: (response) => {
-           console.log('Login successful:', response);
-            this.showPopup = true;
-        // Removed localStorage.setItem('user', ...) to prevent auto-login after registration
-        console.log('Register:', { username: this.username,fullName: this.fullName, email: this.email, password: this.password });
+        console.log('Registration successful:', response);
+        this.showPopup = true;
+        console.log('Register:', { username: this.username, fullName: this.fullName, email: this.email, password: this.password });
         console.log('Registration successful, navigating to /login');
-        this.resetForm(); // Clear form fields
+        this.resetForm();
         this.router.navigate(['/login']);
       },
       error: (err) => {
+        this.errorMessage = 'Registration failed, please try again';
         console.error('Registration failed:', err);
-        // Optionally show error in template
       }
     });
   }

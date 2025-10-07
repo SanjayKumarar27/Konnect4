@@ -1,7 +1,8 @@
 //Login.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 
 
 @Component({
@@ -10,12 +11,23 @@ import { AuthService } from '../../services/auth.service';
   standalone: false
 })
 export class Login implements OnInit {
+ loginForm: FormGroup;
   email: string = '';
   password: string = '';
   errorMessage: string = '';
-  showPopup:boolean=false;
+  showPopup: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  @ViewChild('loginForm') form: NgForm | undefined;
+
+  get emailControl() { return this.loginForm.get('email')!; }
+  get passwordControl() { return this.loginForm.get('password')!; }
+
+  constructor(private router: Router, private authService: AuthService) {
+    this.loginForm = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)])
+    });
+  }
 
   ngOnInit() {
     // Redirect to home if already logged in
@@ -25,7 +37,11 @@ export class Login implements OnInit {
     }
   }
 
-  onLogin() {
+  onLogin(form:NgForm) {
+    if(!form.valid){
+      this.errorMessage="Form Is Not Valid"
+      return;
+    }
     // Clear previous error
     this.errorMessage = '';
     // Call AuthService login
