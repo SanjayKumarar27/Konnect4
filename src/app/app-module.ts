@@ -17,6 +17,7 @@ import { SearchComponent } from './components/search/search';
 import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './components/profile/profile';
 import { CommentList } from './components/comment-list/comment-list';
+import { UserFollwer } from './user-follwer/user-follwer';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { CommentList } from './components/comment-list/comment-list';
     HomeComponent,
     SearchComponent,
     ProfileComponent,
-    CommentList
+    CommentList,
+    UserFollwer
 
 
   ],

@@ -60,6 +60,7 @@ export class ProfileComponent implements OnInit {
   loadById(id: number) {
     this.loading = true;
     this.userService.getUserProfile(id).subscribe(profile => {
+      console.log(profile)
       this.profile = profile;
       this.userId = id;
       this.isCurrentUser = this.currentUserId === id;
@@ -94,7 +95,7 @@ export class ProfileComponent implements OnInit {
   follow() {
     if (!this.userId || !this.profile) return;
     this.followService.followUser(this.currentUserId, { targetUserId: this.userId }).subscribe(res => {
-      alert(res.message);
+      // alert(res.message);
       // Update profile object so template reacts
       this.profile!.isFollowing = true;
       this.profile!.followersCount++; // optional: increment followers count dynamically
@@ -104,7 +105,7 @@ export class ProfileComponent implements OnInit {
   unfollow() {
     if (!this.userId || !this.profile) return;
     this.followService.unfollowUser(this.currentUserId, { targetUserId: this.userId }).subscribe(res => {
-      alert(res.message);
+      // alert(res.message);
       // Update profile object so template reacts
       this.profile!.isFollowing = false;
       this.profile!.followersCount--; // optional: decrement followers count dynamically

@@ -59,4 +59,7 @@ export class TopbarComponent {
     alert('Logged out (frontend stub)');
     this.router.navigate(['/']);
   }
+  gotoprofile(){
+    this.router.navigate(['/profile',this.userId]);
+  }
 }
