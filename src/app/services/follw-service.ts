@@ -18,6 +18,15 @@ export class FollowService {
 
   constructor(private http: HttpClient) {}
 
+  getFollowers(userId: number): Observable<FollowUserDto[]> {
+    return this.http.get<FollowUserDto[]>(`${this.apiUrl}/followers/${userId}`);
+  }
+
+  // ✅ NEW: Get Following
+  getFollowing(userId: number): Observable<FollowUserDto[]> {
+    return this.http.get<FollowUserDto[]>(`${this.apiUrl}/following/${userId}`);
+  }
+
   followUser(followerUserId: number, dto: FollowDto): Observable<any> {
     return this.http.post(`${this.apiUrl}/follow/${followerUserId}`, dto);
   }

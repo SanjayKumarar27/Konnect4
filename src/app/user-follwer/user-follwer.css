@@ -1,0 +1,60 @@
+.followers-page, .following-page {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.loading, .empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.followers-list, .following-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.follower-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.follower-item:hover {
+  background: #f9f9f9;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.username {
+  font-weight: 600;
+  color: #1da1f2;
+  text-decoration: none;
+}
+
+.fullname {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}

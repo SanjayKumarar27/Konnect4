@@ -13,14 +13,19 @@
       </button>
     </form>
 
-  <div *ngFor="let comment of comments" class="border-b border-gray-200 py-2">
-    <b class="text-sm text-gray-900">{{ comment.username }}</b>
-    <button *ngIf="canDeleteComment(comment)" 
-        (click)="deleteComment(comment.commentId)" 
-        style="color:red; background:yellow; padding:4px;" value="Delete">
-  <i class="fa fa-trash">Delete</i>
-</button>
-    <p class="mt-1 text-sm text-gray-600">{{ comment.content }}</p>
+  <div *ngFor="let comment of comments" class="border-b border-gray-200 py-2 flex justify-between">
+   <div>
+     <b class="text-sm text-gray-900">{{ comment.username }}</b>
+
+     <p class="mt-1 text-sm text-gray-600">{{ comment.content }}</p>
+   </div>
+   <div>
+     <button *ngIf="canDeleteComment(comment)" 
+         (click)="deleteComment(comment.commentId)" 
+         style="color:red;" value="Delete">
+   <i class="fa fa-trash"></i>
+ </button>
+   </div>
 
 
   </div>

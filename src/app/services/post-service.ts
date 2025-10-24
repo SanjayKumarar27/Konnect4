@@ -35,7 +35,8 @@ export class PostService {
   }
  deleteComment(commentId: number, userId: number): Observable<any> {
     // Pass userId as query parameter
-    return this.http.delete<any>(`${this.apiUrl}/${commentId}?userId=${userId}`);
+    return this.http.delete<any>(`${this.apiUrl}/Comments/${commentId}?userId=${userId}`);
+    // https://localhost:7214/api/Comments/29?userId=7
   }
 
   addComment(data: any): Observable<any> {

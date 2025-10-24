@@ -23,7 +23,7 @@ style="background-image: linear-gradient(rgba(30,30,60,0.6), rgba(50,10,80,0.6))
       Registration successful!
     </div>
     <h2 class="text-center mb-8 text-3xl font-poppins font-bold text-white">Register</h2>
-    <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)" class="space-y-3">
+    <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)" class="space-y-2">
       <div>
         <label for="fullName" class="block text-lg font-poppins font-medium text-white">Full Name</label>
         <input id="fullName" type="text" [(ngModel)]="fullName" name="fullName" required minlength="2" #fullNameInput="ngModel"
@@ -73,10 +73,10 @@ style="background-image: linear-gradient(rgba(30,30,60,0.6), rgba(50,10,80,0.6))
               class="w-full text-white py-3 rounded-lg transition duration-300 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 hover:bg-gradient-to-r hover:from-indigo-600 hover:via-purple-600 hover:to-indigo-700 font-poppins font-semibold shadow-md hover:shadow-xl">
         Register
       </button>
-      <button type="button" (click)="resetForm()"
+      <!-- <button type="button" (click)="resetForm()"
               class="w-full mt-4 bg-gray-700 text-white py-3 rounded-lg transition duration-300 hover:bg-gray-800 font-poppins font-semibold shadow-md hover:shadow-xl">
         Refresh
-      </button>
+      </button> -->
     </form>
     <p class="mt-6 text-center text-lg font-poppins text-white">
       Already have an account? <a routerLink="/login" class="text-cyan-300 hover:text-cyan-400 transition duration-300">Login</a>

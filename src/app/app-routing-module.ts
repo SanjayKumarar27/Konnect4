@@ -9,6 +9,7 @@ import { AuthGuard } from './auth-guard';
 import { HomeComponent } from './components/home/home';
 import { ProfileComponent } from './components/profile/profile';
 import { CommentList } from './components/comment-list/comment-list';
+import { UserFollwer } from './user-follwer/user-follwer';
 
 const routes: Routes = [
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'home', component: HomeComponent ,canActivate:[AuthGuard]},
   { path: 'profile/:id', component: ProfileComponent ,canActivate:[AuthGuard]},
+  { path: 'profile/:id/followers', component: UserFollwer},
   { path: 'create-post', component: PostCreateComponent ,canActivate:[AuthGuard]},
   { path: 'update-post/:postId', component: PostUpdate,canActivate:[AuthGuard] },
  

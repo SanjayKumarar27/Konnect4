@@ -71,9 +71,11 @@ export class CommentList implements OnInit {
   }
   canDeleteComment(comment: any): boolean {
   const storedUser = localStorage.getItem('user');
+  // console.log(storedUser)
   if (!storedUser) return false;
 
   const userId = JSON.parse(storedUser).userId;
+  
   // Only allow deleting own comments
   return comment.userId === userId;
 }
