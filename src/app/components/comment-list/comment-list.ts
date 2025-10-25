@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { PostService } from '../../services/post-service';
-import { EmojiPicker } from '../emoji-picker/emoji-picker'; // your component
+
 
 @Component({
   selector: 'app-comment-list',
@@ -29,7 +27,6 @@ export class CommentList implements OnInit, OnDestroy {
     this.loadUserId();
     if (this.postId) this.loadComments();
 
-    // ✅ Subscribe to emojiInput$ changes
     this.emojiSub = this.emojiInput$.subscribe((emoji) => {
       if (emoji) this.newComment += emoji;
     });

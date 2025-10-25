@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../../services/post-service';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post-create',
@@ -14,14 +15,23 @@ export class PostCreateComponent implements OnInit {
   previewUrl: string | null = null;
   selectedFile: File | null = null;
   remainingChars = 1000;
-  userId!: number; // Will be loaded from localStorage
+  userId!: number; // Will be loaded from localStorage  
+   private emojiSub!: Subscription;
+  emojiInput$ = new BehaviorSubject<string>('');
   avatarUrl = `https://ui-avatars.com/api/?name=User&background=0A66C2&color=fff`;
 
   constructor(private postService: PostService, private router: Router) {}
 
   ngOnInit() {
     this.loadUserId();
+     this.emojiSub = this.emojiInput$.subscribe((emoji) => {
+      if (emoji) this.content += emoji;
+    });
   }
+    ngOnDestroy(): void {
+    this.emojiSub?.unsubscribe();
+  }
+  
 
   loadUserId() {
     const storedUser = localStorage.getItem('user');

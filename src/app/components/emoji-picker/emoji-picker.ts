@@ -1,6 +1,4 @@
-import { CommonModule } from "@angular/common";
-import { Component, ElementRef, Input, ViewChild } from "@angular/core";
-import { PickerModule } from "@ctrl/ngx-emoji-mart";
+import { Component, ElementRef, Input, ViewChild, ViewEncapsulation } from "@angular/core";
 import { Subject } from "rxjs";
 
 @Component({
@@ -9,6 +7,8 @@ import { Subject } from "rxjs";
   styleUrls: ["./emoji-picker.css"],
   standalone:false
 })
+
+
 export class EmojiPicker {
   isOpened = false;
   @Input() emojiInput$: Subject<string> | undefined;
