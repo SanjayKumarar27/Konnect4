@@ -1,0 +1,22 @@
+<div class="following-page">
+  <h2>Following</h2>
+  
+  <div *ngIf="loading" class="loading">Loading following...</div>
+  
+  <div *ngIf="!loading && following.length === 0" class="empty">
+    Not following anyone yet.
+  </div>
+
+  <div class="following-list" *ngIf="!loading && following.length > 0">
+    <div class="follower-item" *ngFor="let user of following">
+      <img [src]="user.profileImageUrl || 'assets/default-avatar.png'" 
+           alt="Profile" class="avatar">
+      <div class="user-info">
+        <a [routerLink]="['/profile', user.userId]" class="username">
+          {{ user.username }}
+        </a>
+        <p class="fullname">{{ user.fullName }}</p>
+      </div>
+    </div>
+  </div>
+</div>

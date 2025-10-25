@@ -18,6 +18,10 @@ import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './components/profile/profile';
 import { CommentList } from './components/comment-list/comment-list';
 import { UserFollwer } from './user-follwer/user-follwer';
+import { UserFollowing } from './user-following/user-following';
+
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { EmojiPicker } from './components/emoji-picker/emoji-picker';
 
 
 @NgModule({
@@ -34,7 +38,9 @@ import { UserFollwer } from './user-follwer/user-follwer';
     SearchComponent,
     ProfileComponent,
     CommentList,
-    UserFollwer
+    UserFollwer,
+    UserFollowing,
+    EmojiPicker
 
 
   ],
@@ -43,8 +49,9 @@ import { UserFollwer } from './user-follwer/user-follwer';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
-
+    CommonModule,
+    PickerModule
+  
 
   ],
   providers: [

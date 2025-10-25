@@ -18,7 +18,8 @@ export class UserService {
   }
 
   getUserProfile(id: number): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.base}/${id}/profile`);
+    const currentUserId = JSON.parse(localStorage.getItem('user') || '{}').userId || 0;
+    return this.http.get<UserProfile>(`${this.base}/${id}/profile?currentUserId=${currentUserId}`);
   }
 
   getUserById(id: number): Observable<any> {
