@@ -33,7 +33,7 @@ export class Login implements OnInit {
     // Redirect to home if already logged in
     console.log('Login ngOnInit: isAuthenticated =', this.authService.isAuthenticated());
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/feed']);
+      this.router.navigate(['/home']);
     }
   }
 
@@ -59,7 +59,7 @@ export class Login implements OnInit {
       console.log('Login successful:', user);
       
       this.resetForm(); // Clear form fields
-      this.router.navigate(['/feed']);
+      this.router.navigate(['/home']);
     },
       error: (err) => {
         this.errorMessage = 'Invalid email or password';

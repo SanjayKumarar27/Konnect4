@@ -1,0 +1,36 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h2>Admin Dashboard</h2>
+    <button (click)="logout()">Logout</button>
+  </div>
+
+  <div class="user-list">
+    <h3>All Users</h3>
+    <table>
+      <thead>
+        <tr><th>Username</th><th>Email</th><th>Posts</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of users">
+          <td>{{ u.username }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.postCount }}</td>
+          <td>
+            <button (click)="viewUserPosts(u)">View Posts</button>
+            <button (click)="deleteUser(u.userId)" class="delete">Delete User</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="posts-section" *ngIf="selectedUserName">
+    <h3>Posts by {{ selectedUserName }}</h3>
+    <ul>
+      <li *ngFor="let post of selectedUserPosts">
+        {{ post.content || post.caption }}
+        <button (click)="deletePost(post.postId)" class="delete">Delete</button>
+      </li>
+    </ul>
+  </div>
+</div>

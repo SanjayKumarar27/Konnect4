@@ -1,12 +1,12 @@
- import { Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  standalone:false,
-  styleUrls: ['./app.css']   // ✅ fixed (plural, array)
+  standalone: false,
+  styleUrls: ['./app.css']
 })
 export class App {
   protected readonly title = signal('Konnect4');
@@ -16,7 +16,8 @@ export class App {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
-        const noLayoutRoutes = ['/login', '/register'];
+        // ✅ Add all routes where you don't want sidebar/topbar
+        const noLayoutRoutes = ['/login', '/register','/', '/admin/login','/admin/dashboard'];
         this.showLayout = !noLayoutRoutes.includes(event.urlAfterRedirects);
       });
   }

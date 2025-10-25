@@ -1,40 +1,39 @@
 import { Component } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
-import { debounceTime, Subject } from 'rxjs';
-
-import { UserList } from '../../models/user';
 import { SearchService } from '../../services/search';
+import { UserList } from '../../models/user';
 
 @Component({
   selector: 'app-topbar',
-  standalone: false,
   templateUrl: './topbar.html',
-  styleUrls: ['./topbar.css']
+  styleUrls: ['./topbar.css'],
+  standalone:false
 })
 export class TopbarComponent {
   query = '';
   suggestions: UserList[] = [];
-  userId!:number;
+  userId!: number;
   private q$ = new Subject<string>();
 
   constructor(private searchService: SearchService, private router: Router) {
     this.q$.pipe(debounceTime(250)).subscribe(q => this.fetch(q));
     this.loadUserId();
   }
-  loadUserId() {
-  const storedUser = localStorage.getItem('user');
-  if (storedUser) {
-    const user = JSON.parse(storedUser);
-    this.userId = user.userId;
-    console.log('Logged-in userId:', this.userId);
 
-  } else {
-    console.error('No user found in localStorage. Redirect to login.');
-    // Optional: redirect to login page
-    // window.location.href = '/login';
+  loadUserId() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      this.userId = user.userId;
+      console.log('Logged-in userId:', this.userId);
+    } else {
+      console.log('No user found in localStorage.');
+    }
   }
-}
+
   onInput() {
     this.q$.next(this.query);
   }
@@ -48,7 +47,6 @@ export class TopbarComponent {
   }
 
   selectSuggestion(s: UserList) {
-    // navigate to profile route with username (Profile component resolves username -> id)
     this.router.navigate(['/profile', s.username]);
     this.suggestions = [];
     this.query = '';
@@ -56,10 +54,12 @@ export class TopbarComponent {
 
   onLogout() {
     // Implement auth logout later — frontend placeholder:
+    localStorage.removeItem('user');  // remove the user details from localStorage
     alert('Logged out (frontend stub)');
     this.router.navigate(['/']);
   }
-  gotoprofile(){
-    this.router.navigate(['/profile',this.userId]);
+
+  goToProfile() {
+    this.router.navigate(['/profile', this.userId]);
   }
 }

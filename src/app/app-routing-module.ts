@@ -10,26 +10,32 @@ import { HomeComponent } from './components/home/home';
 import { ProfileComponent } from './components/profile/profile';
 import { CommentList } from './components/comment-list/comment-list';
 import { UserFollwer } from './user-follwer/user-follwer';
+import { AdminLoginComponent } from './components/admin-login/admin-login';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard';
+import { LandingComponent } from './components/landing/landing';
+import { AdminAuthGuard } from './admin_auth-guard';
+
 
 const routes: Routes = [
 
+  // ✅ Landing Page (default entry point)
+  { path: '', component: LandingComponent },
+
+  // ✅ User Authentication & Home
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { path: 'home', component: HomeComponent ,canActivate:[AuthGuard]},
-  { path: 'profile/:id', component: ProfileComponent ,canActivate:[AuthGuard]},
-  { path: 'profile/:id/followers', component: UserFollwer},
-  { path: 'create-post', component: PostCreateComponent ,canActivate:[AuthGuard]},
-  { path: 'update-post/:postId', component: PostUpdate,canActivate:[AuthGuard] },
- 
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'profile/:id', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile/:id/followers', component: UserFollwer },
+  { path: 'create-post', component: PostCreateComponent, canActivate: [AuthGuard] },
+  { path: 'update-post/:postId', component: PostUpdate, canActivate: [AuthGuard] },
 
-  // { path: 'comments/:postId', component: CommentsList,canActivate:[AuthGuard] },
-
-  // ✅ Default redirect
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  // ✅ Admin Authentication & Dashboard
+  { path: 'admin/login', component: AdminLoginComponent },
+  { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [AdminAuthGuard] },
 
   // ✅ Catch-all redirect
-  { path: '**', redirectTo: '/home' }
-  
+  { path: '**', redirectTo: '' }
 
 ];
 

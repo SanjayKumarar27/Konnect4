@@ -7,7 +7,7 @@ import {  PostCreateComponent } from './components/post-create/post-create';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PostFeed } from './components/post-feed/post-feed';
 import { PostUpdate } from './components/post-update/post-update';
-import {  provideHttpClient } from '@angular/common/http';
+import {  HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 import { TopbarComponent } from './components/topbar/topbar';
@@ -18,6 +18,11 @@ import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './components/profile/profile';
 import { CommentList } from './components/comment-list/comment-list';
 import { UserFollwer } from './user-follwer/user-follwer';
+import { AdminLoginComponent } from './components/admin-login/admin-login';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard';
+import { LandingComponent } from './components/landing/landing';
+import { AuthInterceptor } from './interceptors/auth.interceptors';
+
 
 
 @NgModule({
@@ -34,7 +39,10 @@ import { UserFollwer } from './user-follwer/user-follwer';
     SearchComponent,
     ProfileComponent,
     CommentList,
-    UserFollwer
+    UserFollwer,
+    AdminLoginComponent,
+    AdminDashboardComponent,
+    LandingComponent
 
 
   ],
@@ -48,6 +56,7 @@ import { UserFollwer } from './user-follwer/user-follwer';
 
   ],
   providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     provideHttpClient()
   ],
   bootstrap: [App]
