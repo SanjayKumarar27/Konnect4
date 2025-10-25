@@ -13,15 +13,14 @@ import { UserProfile, UpdateProfile } from '../../models/user';
 })
 export class ProfileComponent implements OnInit {
   param: string | null = null;
-  userId: number | null = null;
+  userId: number | null = null; // Fixed: Added userId
   profile?: UserProfile;
   form: FormGroup;
   saving = false;
   loading = true;
-
   showEditForm = false;
   isCurrentUser = false;
-  currentUserId: number = 0; // will be fetched from localStorage
+  currentUserId: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,9 +39,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.loadCurrentUser();
     this.param = this.route.snapshot.paramMap.get('id');
-
     const idToLoad = this.param ? Number(this.param) : this.currentUserId;
     if (!isNaN(idToLoad) && idToLoad > 0) {
+      this.userId = idToLoad; // Fixed: Set userId
       this.loadById(idToLoad);
     }
   }
@@ -54,26 +53,30 @@ export class ProfileComponent implements OnInit {
       this.currentUserId = user.userId;
     } else {
       console.error('No user found in localStorage. Redirect to login.');
+      // Optionally redirect to login page
+      // this.router.navigate(['/login']);
     }
   }
 
   loadById(id: number) {
     this.loading = true;
-    this.userService.getUserProfile(id).subscribe(profile => {
-      console.log(profile)
-      this.profile = profile;
-      this.userId = id;
-      this.isCurrentUser = this.currentUserId === id;
-
-      // Patch edit form
-      this.form.patchValue({
-        fullName: profile.fullName,
-        bio: profile.bio,
-        profileImageUrl: profile.profileImageUrl,
-        isPrivate: (profile as any).isPrivate ?? false
-      });
-
-      this.loading = false;
+    this.userService.getUserProfile(id).subscribe({
+      next: (profile) => {
+        this.profile = profile;
+        console.log(profile);
+        this.isCurrentUser = this.currentUserId === id;
+        this.form.patchValue({
+          fullName: profile.fullName,
+          bio: profile.bio,
+          profileImageUrl: profile.profileImageUrl,
+          isPrivate: profile.isPrivate ?? false
+        });
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading profile:', err);
+        this.loading = false;
+      }
     });
   }
 
@@ -82,33 +85,41 @@ export class ProfileComponent implements OnInit {
   }
 
   save() {
-    if (!this.userId) return;
+    if (!this.currentUserId) return;
     this.saving = true;
     const dto: UpdateProfile = this.form.value;
-    this.userService.updateProfile(this.userId, dto).subscribe(res => {
-      this.saving = false;
-      this.showEditForm = false;
-      this.loadById(this.userId!);
+    this.userService.updateProfile(this.currentUserId, dto).subscribe({
+      next: () => {
+        this.saving = false;
+        this.showEditForm = false;
+        this.loadById(this.currentUserId); // Refresh profile
+      },
+      error: (err) => {
+        console.error('Error saving profile:', err);
+        this.saving = false;
+      }
     });
   }
 
   follow() {
     if (!this.userId || !this.profile) return;
-    this.followService.followUser(this.currentUserId, { targetUserId: this.userId }).subscribe(res => {
-      // alert(res.message);
-      // Update profile object so template reacts
-      this.profile!.isFollowing = true;
-      this.profile!.followersCount++; // optional: increment followers count dynamically
+    this.followService.followUser(this.currentUserId, { targetUserId: this.userId }).subscribe({
+      next: (res) => {
+        this.profile!.isFollowing = true; // Update UI
+        this.profile!.followersCount++; // Increment count
+      },
+      error: (err) => console.error('Follow error:', err)
     });
   }
 
   unfollow() {
     if (!this.userId || !this.profile) return;
-    this.followService.unfollowUser(this.currentUserId, { targetUserId: this.userId }).subscribe(res => {
-      // alert(res.message);
-      // Update profile object so template reacts
-      this.profile!.isFollowing = false;
-      this.profile!.followersCount--; // optional: decrement followers count dynamically
+    this.followService.unfollowUser(this.currentUserId, { targetUserId: this.userId }).subscribe({
+      next: (res) => {
+        this.profile!.isFollowing = false; // Update UI
+        this.profile!.followersCount--; // Decrement count
+      },
+      error: (err) => console.error('Unfollow error:', err)
     });
   }
 }

@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home';
 import { ProfileComponent } from './components/profile/profile';
 import { CommentList } from './components/comment-list/comment-list';
 import { UserFollwer } from './user-follwer/user-follwer';
+import { UserFollowing } from './user-following/user-following';
 
 const routes: Routes = [
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent ,canActivate:[AuthGuard]},
   { path: 'profile/:id', component: ProfileComponent ,canActivate:[AuthGuard]},
   { path: 'profile/:id/followers', component: UserFollwer},
+  { path: 'profile/:id/following', component: UserFollowing},
   { path: 'create-post', component: PostCreateComponent ,canActivate:[AuthGuard]},
   { path: 'update-post/:postId', component: PostUpdate,canActivate:[AuthGuard] },
  

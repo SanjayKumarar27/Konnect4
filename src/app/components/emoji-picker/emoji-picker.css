@@ -1,0 +1,55 @@
+.emoji-picker-container {
+  position: relative;
+}
+
+.emoji-picker-container .picker {
+  position: absolute;
+  bottom: 40px;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.emoji-picker-container {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.emoji-picker-container button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.emoji-picker-container button svg {
+  display: flex;
+  width: 24px;
+  height: 24px;
+}
+
+.emoji-picker-container button svg path {
+  fill: var(--str-chat__message-input-tools-color);
+}
+
+.emoji-picker-container .picker {
+  z-index: 3;
+  position: absolute;
+  bottom: 100%;
+  transform: scale(0.8);
+  right: 0;
+  transform-origin: bottom right;
+}
+
+@media only screen and (min-device-width: 1024px) {
+  .emoji-picker-container .picker {
+    transform: scale(1);
+  }
+}

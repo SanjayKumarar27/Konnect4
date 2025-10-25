@@ -15,7 +15,8 @@ export interface UserProfile {
   followingCount: number;
   postsCount: number;
   posts: Post[];
-  isFollowing:boolean
+  isFollowing:boolean;
+  isPrivate:boolean;
 }
 
 export interface UpdateProfile {

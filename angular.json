@@ -93,7 +93,9 @@
             ],
             "styles": [
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_module/@ctrl/ngx-emoji-mart/picker.css"
+          
             ]
           }
         }
