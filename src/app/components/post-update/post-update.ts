@@ -29,30 +29,19 @@ export class PostUpdate implements OnInit {
     this.loadUserId();
 
     // ✅ Get postId from URL
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('postId');
     if (id) {
       this.postId = Number(id);
-      // this.loadPost(this.postId);
     }
   }
 
   loadUserId() {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      const user = JSON.parse(storedUser);
-      this.userId = user.userId;
+      this.userId = JSON.parse(storedUser).userId;
     }
   }
 
-  // ✅ Load existing post into form
-  // loadPost(postId: number) {
-  //   this.postService.getPostById(postId).subscribe(post => {
-  //     this.content = post.content;
-  //     this.imageUrl = post.imageUrl;
-  //     this.previewUrl = post.imageUrl;
-  //     this.onContentChange();
-  //   });
-  // }
 
   onContentChange() {
     this.remainingChars = 1000 - (this.content?.length || 0);
@@ -96,8 +85,8 @@ export class PostUpdate implements OnInit {
 
     this.postService.updatePost(this.postId, dto, this.userId).subscribe({
       next: () => {
-        alert('Post updated!');
-        this.router.navigate(['/feed']);
+        // alert('Post updated!');
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         console.error('Update post failed', err);

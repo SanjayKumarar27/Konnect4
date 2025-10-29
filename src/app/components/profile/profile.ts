@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../../services/user';
 import { FollowService } from '../../services/follw-service';
+import { PostService } from '../../services/post-service'; // Import PostService
 import { UserProfile, UpdateProfile } from '../../models/user';
 
 @Component({
@@ -26,7 +27,9 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private followService: FollowService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private postService: PostService, // Inject PostService
+    private router: Router // Inject Router
   ) {
     this.form = this.fb.group({
       fullName: [''],
@@ -63,6 +66,9 @@ export class ProfileComponent implements OnInit {
     this.userService.getUserProfile(id).subscribe({
       next: (profile) => {
         this.profile = profile;
+        if (this.profile.posts) {
+          this.profile.posts.forEach(p => p.showOptions = false);
+        }
         console.log(profile);
         this.isCurrentUser = this.currentUserId === id;
         this.form.patchValue({
@@ -105,8 +111,10 @@ export class ProfileComponent implements OnInit {
     if (!this.userId || !this.profile) return;
     this.followService.followUser(this.currentUserId, { targetUserId: this.userId }).subscribe({
       next: (res) => {
-        this.profile!.isFollowing = true; // Update UI
-        this.profile!.followersCount++; // Increment count
+        if (this.profile) {
+          this.profile.isFollowing = true; // Update UI
+          this.profile.followersCount++; // Increment count
+        }
       },
       error: (err) => console.error('Follow error:', err)
     });
@@ -116,10 +124,46 @@ export class ProfileComponent implements OnInit {
     if (!this.userId || !this.profile) return;
     this.followService.unfollowUser(this.currentUserId, { targetUserId: this.userId }).subscribe({
       next: (res) => {
-        this.profile!.isFollowing = false; // Update UI
-        this.profile!.followersCount--; // Decrement count
+        if (this.profile) {
+          this.profile.isFollowing = false; // Update UI
+          this.profile.followersCount--; // Decrement count
+        }
       },
       error: (err) => console.error('Unfollow error:', err)
     });
   }
+
+  editPost(postId: number) {
+    // Navigate to edit page
+    this.router.navigate(['/update-post', postId]);
+  }
+
+  deletePost(postId: number) {
+  const user = localStorage.getItem('user');
+  if (!user) { alert('User not logged in'); return; }
+  const currentUserId = JSON.parse(user).userId;
+
+  this.postService.deletepost(postId, currentUserId).subscribe({
+    next: (res: any) => {
+      alert(res.message || 'Post deleted successfully.');
+      // Remove the post from the UI
+      if (this.profile && this.profile.posts) {
+        this.profile.posts = this.profile.posts.filter(p => p.postId !== postId);
+      }
+     
+    },
+    error: (err: any) => {
+      console.error(err);
+      // Check if it's 401 Unauthorized
+      if (err.status === 401) {
+        alert(err.error || 'You cannot delete others post!');
+      } else if (err.status === 404) {
+        alert(err.error || 'Post not found!');
+      } else {
+        alert('Something went wrong while deleting the post.');
+      }
+    }
+  });
+}
+
 }

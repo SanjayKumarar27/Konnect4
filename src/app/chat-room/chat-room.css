@@ -5,7 +5,8 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 100px);
+  /* height: 90vh; */
   display: flex;
   flex-direction: column;
 }

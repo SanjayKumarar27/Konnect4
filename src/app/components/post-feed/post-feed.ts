@@ -80,6 +80,8 @@ loadUserId() {
   //     });
   //   }
   // }
+
+  
 deletePost(postId: number) {
   const user = localStorage.getItem('user');
   if (!user) { alert('User not logged in'); return; }
