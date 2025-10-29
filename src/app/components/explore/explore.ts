@@ -35,7 +35,16 @@ export class Explore implements OnInit {
     private postService: PostService,
     private router: Router,
     private cdr: ChangeDetectorRef
-  ) {}
+
+  ) {    
+  }
+   toggleComments(post: any) {
+    console.log(post.showComments)
+    post.showComments = !post.showComments;
+  }
+  updateCommentsCount(post: any, newCount: number) {
+  post.commentsCount = newCount;
+}
 
   ngOnInit(): void {
     this.loadPosts();

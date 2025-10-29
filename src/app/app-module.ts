@@ -23,6 +23,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiPicker } from './components/emoji-picker/emoji-picker';
 import { ChatRoom } from './chat-room/chat-room';
 import { ChatList } from './chat-list/chat-list';
+import { Explore } from './components/explore/explore';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { ChatList } from './chat-list/chat-list';
     UserFollowing,
     EmojiPicker,
     ChatList,
-    ChatRoom
+    ChatRoom,
+    Explore
   ],
   imports: [
     BrowserModule,

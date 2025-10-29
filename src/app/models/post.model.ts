@@ -11,4 +11,6 @@ export interface Post {
   liked?: boolean;
   profileImageUrl?: string;
   category?: string;
+  showOptions?: boolean;
+  showComments?:boolean;
 }

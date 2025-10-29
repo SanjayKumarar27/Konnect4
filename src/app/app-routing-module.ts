@@ -13,6 +13,7 @@ import { UserFollwer } from './user-follwer/user-follwer';
 import { UserFollowing } from './user-following/user-following';
 import { ChatList } from './chat-list/chat-list';
 import { ChatRoom } from './chat-room/chat-room';
+import { Explore } from './components/explore/explore';
 
 
 const routes: Routes = [
@@ -24,6 +25,8 @@ const routes: Routes = [
   { path: 'profile/:id/following', component: UserFollowing },
   { path: 'create-post', component: PostCreateComponent, canActivate: [AuthGuard] },
   { path: 'update-post/:postId', component: PostUpdate, canActivate: [AuthGuard] },
+  {path:'Explore',component:Explore},
+ 
   
   // Chat routes
   { path: 'chats', component: ChatList, canActivate: [AuthGuard] },
