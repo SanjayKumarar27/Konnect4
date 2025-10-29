@@ -90,6 +90,7 @@ deletePost(postId: number) {
       alert(res.message || 'Post deleted successfully.');
       // Remove the post from the UI
       this.posts = this.posts.filter(p => p.postId !== postId);
+      this.loadFeed();
     },
     error: (err: any) => {
       console.error(err);
