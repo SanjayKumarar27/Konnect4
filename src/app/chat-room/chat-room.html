@@ -1,0 +1,117 @@
+<div class="chat-room-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading conversation...</p>
+  </div>
+
+  <!-- Chat Room -->
+  <div *ngIf="!isLoading && conversation" class="chat-content">
+    <!-- Chat Header -->
+    <div class="chat-header">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fa fa-arrow-left"></i>
+      </button>
+      
+      <div class="chat-user-info" *ngIf="getOtherUser() as otherUser">
+        <img [src]="otherUser.profileImageUrl || 'assets/default-avatar.png'" 
+             [alt]="otherUser.fullName"
+             class="user-avatar">
+        <div>
+          <h4>{{ otherUser.fullName }}</h4>
+          <span class="user-status">
+            <span class="status-dot" [class.online]="otherUser.isOnline"></span>
+            {{ otherUser.isOnline ? 'Online' : 'Offline' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="chat-actions">
+        <button class="btn-icon" title="More options">
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages Container -->
+    <div class="messages-container" #messagesContainer>
+      <div *ngFor="let message of messages" 
+           class="message"
+           [class.my-message]="isMyMessage(message)"
+           [class.other-message]="!isMyMessage(message)">
+        
+        <div *ngIf="!isMyMessage(message)" class="message-avatar">
+          <img [src]="getOtherUser()?.profileImageUrl || 'assets/default-avatar.png'" 
+               [alt]="message.senderFullName">
+        </div>
+
+        <div class="message-content">
+          <div class="message-bubble" [class.deleted]="message.isDeleted">
+            <p>{{ message.content }}</p>
+            <span *ngIf="message.isEdited" class="edited-indicator">(edited)</span>
+          </div>
+          
+          <div class="message-meta">
+            <span class="message-time">{{ formatMessageTime(message.sentAt) }}</span>
+            <span *ngIf="isMyMessage(message) && message.isRead" class="read-indicator">
+              <i class="fa fa-check-double"></i> Read
+            </span>
+            <button 
+              *ngIf="isMyMessage(message) && !message.isDeleted" 
+              class="btn-delete-message"
+              (click)="deleteMessage(message.messageId)"
+              title="Delete message">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div *ngIf="typingUsers.size > 0" class="typing-indicator">
+        <div class="typing-avatar">
+          <img [src]="getOtherUser()?.profileImageUrl || 'assets/default-avatar.png'" 
+               [alt]="getOtherUser()?.fullName">
+        </div>
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="typing-text">{{ getTypingText() }}</span>
+      </div>
+    </div>
+
+    <!-- Message Input -->
+    <div class="message-input-container">
+      <div class="input-wrapper">
+        <input 
+          type="text" 
+          class="message-input"
+          placeholder="Type a message..."
+          [(ngModel)]="newMessage"
+          (input)="onTyping()"
+          (keyup.enter)="sendMessage()"
+          [disabled]="!isConnected">
+        
+        <div class="emoji-picker-wrapper">
+          <k4-emoji-picker [emojiInput$]="emojiInput$"></k4-emoji-picker> 
+          
+        </div>
+      </div>
+      
+      <button 
+        class="btn-send" 
+        (click)="sendMessage()"
+        [disabled]="!newMessage.trim() || !isConnected">
+        <i class="fa fa-paper-plane"></i>
+      </button>
+    </div>
+
+    <!-- Connection Warning -->
+    <div *ngIf="!isConnected" class="connection-warning">
+      <i class="fa fa-exclamation-triangle"></i>
+      Reconnecting...
+    </div>
+  </div>
+</div>

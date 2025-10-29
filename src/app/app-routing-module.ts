@@ -11,28 +11,29 @@ import { ProfileComponent } from './components/profile/profile';
 import { CommentList } from './components/comment-list/comment-list';
 import { UserFollwer } from './user-follwer/user-follwer';
 import { UserFollowing } from './user-following/user-following';
+import { ChatList } from './chat-list/chat-list';
+import { ChatRoom } from './chat-room/chat-room';
+
 
 const routes: Routes = [
-
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { path: 'home', component: HomeComponent ,canActivate:[AuthGuard]},
-  { path: 'profile/:id', component: ProfileComponent ,canActivate:[AuthGuard]},
-  { path: 'profile/:id/followers', component: UserFollwer},
-  { path: 'profile/:id/following', component: UserFollowing},
-  { path: 'create-post', component: PostCreateComponent ,canActivate:[AuthGuard]},
-  { path: 'update-post/:postId', component: PostUpdate,canActivate:[AuthGuard] },
- 
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'profile/:id', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile/:id/followers', component: UserFollwer },
+  { path: 'profile/:id/following', component: UserFollowing },
+  { path: 'create-post', component: PostCreateComponent, canActivate: [AuthGuard] },
+  { path: 'update-post/:postId', component: PostUpdate, canActivate: [AuthGuard] },
+  
+  // Chat routes
+  { path: 'chats', component: ChatList, canActivate: [AuthGuard] },
+  { path: 'chat/:id', component: ChatRoom, canActivate: [AuthGuard] },
 
-  // { path: 'comments/:postId', component: CommentsList,canActivate:[AuthGuard] },
-
-  // ✅ Default redirect
+  // Default redirect
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 
-  // ✅ Catch-all redirect
+  // Catch-all redirect
   { path: '**', redirectTo: '/home' }
-  
-
 ];
 
 @NgModule({

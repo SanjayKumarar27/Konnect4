@@ -29,11 +29,9 @@
 
 .emoji-picker-container .picker {
   position:absolute;
-  /* top: calc(20% +30px); */
-  /* bottom: calc(0% + 8px); */
-  /* top: auto; */
-  /* right: 0; */
-  left:150px;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 8px;
   z-index:99999;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   border-radius: 12px;
