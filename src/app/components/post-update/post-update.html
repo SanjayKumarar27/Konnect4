@@ -1,22 +1,44 @@
 <div class="create-post-card">
   <!-- Top Section -->
-  <div class="create-top">
+ <div class="create-top">
     <img class="avatar" [src]="avatarUrl" alt="avatar" />
     <div class="create-input">
+        <div class="relative flex-1">
       <textarea
         [(ngModel)]="content"
         name="content"
         maxlength="1000"
         placeholder="What do you want to talk about?"
         (input)="onContentChange()"
-      ></textarea>
+      > 
+    </textarea>
+    <div class="absolute right-2 bottom-1/2 transform -translate-x-1/2 z-20 ">
+      <k4-emoji-picker  [emojiInput$]="emojiInput$"></k4-emoji-picker>
+    </div>
+
+</div>
 
       <div class="meta-row">
         <span class="chars">{{ remainingChars }} characters left</span>
       </div>
     </div>
   </div>
-
+   <div class="form-group">
+  <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category (Optional)</label>
+  <select
+    id="category"
+    [(ngModel)]="category"
+    name="category"
+    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+  >
+    <option value="">No Category</option>
+    <option value="sports">Sports</option>
+    <option value="politics">Politics</option>
+    <option value="entertainment">Entertainment</option>
+    <option value="tech">Technology</option>
+    <option value="food">Food</option>
+  </select>
+</div>
   <!-- Actions -->
   <div class="create-actions">
     <div class="left-actions">
@@ -43,8 +65,6 @@
         Add image
       </label>
       -->
-    </div>
-
     <div class="right-actions">
       <button class="post-btn" [disabled]="!canUpdate()" (click)="onSubmit()">
         Update
@@ -57,4 +77,5 @@
     <img [src]="previewUrl" alt="preview" />
     <button class="remove-preview" (click)="clearImage()">✕</button>
   </div>
+</div>
 </div>
