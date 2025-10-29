@@ -1,5 +1,5 @@
 <aside [ngClass]="open ? 'w-64' : 'w-16'" 
-       class="bg-white border-r border-gray-200 min-h-screen shadow-lg transition-all duration-500 flex flex-col fixed top-20 left-0 z-50">
+       class="bg-white border-r border-gray-200 min-h-screen shadow-lg transition-all duration-500 flex flex-col fixed top-16 left-0 z-50">
 
   <!-- Header with toggle button -->
   <div class="flex items-center justify-end p-3 border-b border-gray-200">
@@ -14,6 +14,7 @@
     <ng-container *ngFor="let item of [
       {icon:'fa-home', label:'Home', action: goHome},
       {icon:'fa-plus-circle', label:'Create Post', action: goCreatePost},
+      {icon:'fa-compass', label:'Explore', action: goExplore},
       {icon:'fa-sign-out-alt', label:'Logout', action: logout}
     ]">
       <button class="group relative flex items-center w-full px-4 py-3 rounded-lg 

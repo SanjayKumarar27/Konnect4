@@ -22,6 +22,7 @@ import { UserFollowing } from './user-following/user-following';
 
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiPicker } from './components/emoji-picker/emoji-picker';
+import { Explore } from './components/explore/explore';
 
 
 @NgModule({
@@ -40,7 +41,9 @@ import { EmojiPicker } from './components/emoji-picker/emoji-picker';
     CommentList,
     UserFollwer,
     UserFollowing,
-    EmojiPicker
+    EmojiPicker,
+    Explore,
+    
 
 
   ],

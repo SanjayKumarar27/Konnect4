@@ -1,9 +1,4 @@
-export interface Post {
-  postId: number;
-  content?: string;
-  imageUrl?: string;
-  createdAt: string; // ISO
-}
+import { Post } from "./post.model";
 
 export interface UserProfile {
   userId: number;

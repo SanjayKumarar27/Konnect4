@@ -11,6 +11,7 @@ import { ProfileComponent } from './components/profile/profile';
 import { CommentList } from './components/comment-list/comment-list';
 import { UserFollwer } from './user-follwer/user-follwer';
 import { UserFollowing } from './user-following/user-following';
+import { Explore } from './components/explore/explore';
 
 const routes: Routes = [
 
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'profile/:id/following', component: UserFollowing},
   { path: 'create-post', component: PostCreateComponent ,canActivate:[AuthGuard]},
   { path: 'update-post/:postId', component: PostUpdate,canActivate:[AuthGuard] },
+  {path:'Explore',component:Explore},
  
 
   // { path: 'comments/:postId', component: CommentsList,canActivate:[AuthGuard] },
