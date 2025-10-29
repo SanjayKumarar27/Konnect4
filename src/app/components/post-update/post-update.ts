@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../../services/post-service';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post-update',
@@ -11,18 +12,22 @@ import { PostService } from '../../services/post-service';
 export class PostUpdate implements OnInit {
   content: string = '';
   imageUrl: string = '';
+   category='';
   previewUrl: string | null = null;
   selectedFile: File | null = null;
   remainingChars = 1000;
+  private emojiSub!: Subscription;
+   emojiInput$ = new BehaviorSubject<string>('');
 
   userId!: number;
   postId!: number;
-  avatarUrl = `https://ui-avatars.com/api/?name=User&background=0A66C2&color=fff`;
+  avatarUrl: string = '';
 
   constructor(
     private postService: PostService,
     private router: Router,
     private route: ActivatedRoute   // ✅ injected properly
+    
   ) {}
 
   ngOnInit() {
@@ -33,12 +38,25 @@ export class PostUpdate implements OnInit {
     if (id) {
       this.postId = Number(id);
     }
+    this.emojiSub = this.emojiInput$.subscribe((emoji) => {
+      if (emoji) this.content += emoji;
+    });
   }
-
+ ngOnDestroy(): void {
+    this.emojiSub?.unsubscribe();
+  }
   loadUserId() {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       this.userId = JSON.parse(storedUser).userId;
+      const user = JSON.parse(storedUser);
+      if (user.profileImageUrl) {
+        this.avatarUrl = user.profileImageUrl;
+      } else if (user.fullName) {
+        this.avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName.substring(0, 2))}&background=0D8ABC&color=fff`;
+      } else {
+        this.avatarUrl = `https://ui-avatars.com/api/?name=NA&background=0D8ABC&color=fff`;
+      }
     }
   }
 
@@ -50,7 +68,7 @@ export class PostUpdate implements OnInit {
   onImageUrlChange() {
     this.previewUrl = this.imageUrl || null;
   }
-
+ 
   onFileSelected(event: any) {
     const file: File = event.target.files && event.target.files[0];
     if (!file) return;

@@ -20,8 +20,8 @@ isSubmitting = false;
   remainingChars = 1000;
   userId!: number; // Will be loaded from localStorage  
    private emojiSub!: Subscription;
-  emojiInput$ = new BehaviorSubject<string>('');
-  avatarUrl = `https://ui-avatars.com/api/?name=User&background=0A66C2&color=fff`;
+  emojiInput$ = new BehaviorSubject<string>('');  
+  avatarUrl: string = '';
 
   constructor(private postService: PostService, private router: Router) {}
 
@@ -41,6 +41,13 @@ isSubmitting = false;
     if (storedUser) {
       const user = JSON.parse(storedUser);
       this.userId = user.userId;
+      if (user.profileImageUrl) {
+        this.avatarUrl = user.profileImageUrl;
+      } else if (user.fullName) {
+        this.avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName.substring(0, 2))}&background=0D8ABC&color=fff`;
+      } else {
+        this.avatarUrl = `https://ui-avatars.com/api/?name=NA&background=0D8ABC&color=fff`;
+      }
       console.log('Logged-in userId:', this.userId);
     } else {
       console.error('No user found in localStorage. Redirecting to login.');
