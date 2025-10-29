@@ -3,6 +3,7 @@ export interface Post {
   content?: string;
   imageUrl?: string;
   createdAt: string; // ISO
+  showOptions?: boolean;
 }
 
 export interface UserProfile {
@@ -14,7 +15,7 @@ export interface UserProfile {
   followersCount: number;
   followingCount: number;
   postsCount: number;
-  posts: Post[];
+  posts: Post[]|undefined;
   isFollowing:boolean;
   isPrivate:boolean;
 }

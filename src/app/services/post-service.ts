@@ -18,7 +18,14 @@ export class PostService {
     return this.http.get(`${this.apiUrl}/posts/feed/${userId}`);
   }
 
+  getPostById(postId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/posts/${postId}`);
+  }
+  // https://localhost:7214/api/Posts/14?userId=1
   updatePost(postId: number, data: any, userId: number): Observable<any> {
+    console.log('Updating post with ID:', postId);
+    console.log('Data:', data);
+    console.log('User ID:', userId);
     return this.http.put(`${this.apiUrl}/posts/${postId}?userId=${userId}`, data);
   }
 
