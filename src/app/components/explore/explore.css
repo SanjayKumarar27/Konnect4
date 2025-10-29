@@ -1,0 +1,183 @@
+/* ————————————————————————
+   EXPLORE PAGE – CLEAN DESIGN
+   ———————————————————————— */
+.explore-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem 1rem;
+  background: white /* Light gray background – breaks white overload */
+  /* min-height: 100vh; */
+}
+
+/* Category Dropdown – Clean & Centered */
+.category-bar {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.cat-select {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  color: #2d3748;
+  min-width: 220px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.cat-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Vertical Feed with Clean Spacing */
+.posts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;           /* Clean gap between posts */
+  align-items: center;
+}
+
+/* Post Card – Clean, Elevated, Readable */
+.post-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #e2e8f0; /* Subtle border */
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Header – Avatar + Meta */
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+  cursor: pointer;
+}
+
+.meta {
+  flex: 1;
+}
+
+.meta strong {
+  font-weight: 600;
+  color: #1a202c;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.meta strong:hover {
+  color: #667eea;
+}
+
+.meta .date {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-top: 0.15rem;
+}
+
+/* Post Body – Clean Text & Image */
+.post-body {
+  padding: 1.25rem;
+}
+
+.post-body p {
+  margin: 0 0 1rem;
+  line-height: 1.7;
+  color: #2d3748;
+  font-size: 1.05rem;
+}
+
+.post-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Footer – Like Button */
+.post-footer {
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e2e8f0;
+  background: #f8f9fa;
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  color: #718096;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.like-btn:hover {
+  background: #edf2f7;
+  color: #e53e3e;
+}
+
+.like-btn.liked {
+  color: #e53e3e;
+}
+
+.like-btn.liked:hover {
+  background: #fff5f5;
+}
+
+/* Loading, Error, Empty States */
+.loading,
+.error,
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+.loading {
+  color: #667eea;
+  font-weight: 500;
+}
+
+.error {
+  color: #e53e3e;
+}
+
+.empty {
+  color: #a0aec0;
+}

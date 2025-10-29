@@ -1,0 +1,66 @@
+<!-- src/app/explore/explore.html -->
+<div class="explore-page">
+
+  <!-- Category Dropdown -->
+  <div class="category-bar">
+    <select
+      [(ngModel)]="selectedCategory"
+      (ngModelChange)="onCategoryChange($event)"
+      class="cat-select"
+    >
+      <option *ngFor="let c of categories" [value]="c.id">{{ c.label }}</option>
+    </select>
+  </div>
+
+  <!-- Loading / Error -->
+  <div class="loading" *ngIf="loading">Loading posts...</div>
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <!-- Posts Grid -->
+  <div class="posts-grid" *ngIf="!loading && posts.length">
+    <article class="post-card" *ngFor="let post of posts">
+      <header class="post-header">
+        <img
+          [src]="post.profileImageUrl ||
+                 'https://ui-avatars.com/api/?name=' + post.username + '&background=0A66C2&color=fff'"
+          [alt]="post.username"
+          class="avatar"
+          (click)="goToProfile(post.userId)"
+        />
+        <div class="meta">
+          <strong (click)="goToProfile(post.userId)" class="clickable">{{ post.username }}</strong>
+          <span class="date">{{ formatDate(post.createdAt) }}</span>
+        </div>
+      </header>
+
+      <div class="post-body">
+        <p>{{ post.content }}</p>
+        <img *ngIf="post.imageUrl" [src]="post.imageUrl" class="post-img" alt="post image" />
+      </div>
+
+      <footer class="post-footer">
+        <button
+          class="like-btn"
+          [class.liked]="post.liked"
+          (click)="toggleLike(post)"
+        >
+          Like {{ post.likesCount }}
+        </button>
+      </footer>
+      <div class="text-gray-600 flex items-center gap-1">
+        
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+      <span class="font-medium">{{ post.commentsCount ?? 0 }}</span>
+    </div>
+  
+
+    </article>
+  </div>
+
+  <div class="empty" *ngIf="!loading && !posts.length && !error">
+    No posts found for this category.
+  </div>
+</div>
