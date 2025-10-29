@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
+import { Post } from '../models/post.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +20,7 @@ export class PostService {
     return this.http.get(`${this.apiUrl}/posts/feed/${userId}`);
   }
 
-  getPostById(postId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/posts/${postId}`);
-  }
-  // https://localhost:7214/api/Posts/14?userId=1
   updatePost(postId: number, data: any, userId: number): Observable<any> {
-    console.log('Updating post with ID:', postId);
-    console.log('Data:', data);
-    console.log('User ID:', userId);
     return this.http.put(`${this.apiUrl}/posts/${postId}?userId=${userId}`, data);
   }
 
@@ -51,5 +46,24 @@ export class PostService {
   }
   deletepost(postId: number,userId: number){
     return this.http.delete(`${this.apiUrl}/posts/${postId}?userId=${userId}`)
+  }
+  getExplorePosts(category: string = ''): Observable<Post[]> {
+    const url = category
+      ? `${this.apiUrl}/posts/explore?category=${encodeURIComponent(category)}`
+      : `${this.apiUrl}/posts/explore`;
+    return this.http.get<Post[]>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+   private handleError(error: HttpErrorResponse): Observable<never> {
+    let message = 'An error occurred';
+    if (error.error instanceof ErrorEvent) {
+      message = error.error.message;
+    } else {
+      message = error.error?.message || `Error ${error.status}: ${error.message}`;
+    }
+    console.error('PostService Error:', message);
+    return throwError(() => new Error(message));
   }
 }

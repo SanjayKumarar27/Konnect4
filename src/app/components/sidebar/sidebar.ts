@@ -19,6 +19,7 @@ export class SidebarComponent {
   goCreatePost = () => { this.router.navigate(['/create-post']); }
   goSearch = () => { this.router.navigate(['/home']); }
   goMessages=()=>{this.router.navigate(['/chats'])}
+    goExplore=() => { this.router.navigate(['/Explore']), { replaceUrl: true }; };
   logout = () => { 
     localStorage.clear();
     this.router.navigate(['/login']); }

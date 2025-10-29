@@ -12,6 +12,9 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 export class PostCreateComponent implements OnInit {
   content: string = '';
   imageUrl: string = '';
+  category='';
+  imagePreview: string | null = null;   // ADD THIS
+isSubmitting = false;
   previewUrl: string | null = null;
   selectedFile: File | null = null;
   remainingChars = 1000;
@@ -90,7 +93,8 @@ export class PostCreateComponent implements OnInit {
     const dto: any = {
       userId: this.userId,
       content: this.content.trim(),
-      imageUrl: this.imageUrl || this.previewUrl || null
+      imageUrl: this.imageUrl || this.previewUrl || null,
+      category: this.category
     };
 
     this.postService.createPost(dto).subscribe({

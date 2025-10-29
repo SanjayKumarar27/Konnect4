@@ -1,10 +1,12 @@
-export interface Post {
-  postId: number;
-  content?: string;
-  imageUrl?: string;
-  createdAt: string; // ISO
-  showOptions?: boolean;
-}
+// export interface Post {
+//   postId: number;
+//   content?: string;
+//   imageUrl?: string;
+//   createdAt: string; // ISO
+//   showOptions?: boolean;
+// }
+
+import { Post } from "./post.model";
 
 export interface UserProfile {
   userId: number;

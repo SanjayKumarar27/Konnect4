@@ -14,6 +14,7 @@ export class PostFeed implements OnInit {
 
   constructor(private postService: PostService,private injector: Injector) {}
    toggleComments(post: any) {
+    console.log(post.showComments);
     post.showComments = !post.showComments;
   }
 
