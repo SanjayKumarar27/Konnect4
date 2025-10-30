@@ -52,7 +52,7 @@ import { AdminPostsComponent } from './components/admin-posts-component/admin-po
     Explore,
     AdminDashboardComponent,
     AdminUserComponent,
-    AdminPostsComponent
+    AdminPostsComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +60,8 @@ import { AdminPostsComponent } from './components/admin-posts-component/admin-po
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    PickerModule
+    PickerModule,
+    
   ],
   providers: [
     provideHttpClient()

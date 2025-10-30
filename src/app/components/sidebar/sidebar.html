@@ -49,7 +49,7 @@
     <ng-container *ngIf="isAdmin()">
       <!-- Admin Section Header -->
       <div *ngIf="open" class="px-4 py-2 mt-2 text-xs font-bold text-indigo-600 uppercase tracking-wider">
-        🔐 Admin Panel
+        Admin Panel
       </div>
 
       <!-- Admin Menu Items -->
@@ -60,7 +60,7 @@
         {icon:'fa-sign-out-alt', label:'Logout', action: logout}
       ]">
         <button class="group relative flex items-center w-full px-4 py-3 rounded-lg 
-                       transition-all duration-300 hover:bg-gradient-to-r hover:from-red-500 hover:via-orange-500 hover:to-red-500 text-gray-600 shadow"
+                       transition-all duration-300 hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-indigo-500 text-gray-600 shadow"
                 (click)="item.action()">
           
           <i class="fa {{item.icon}} text-lg transition-transform duration-300 group-hover:scale-125 group-hover:text-white"></i>
@@ -78,26 +78,7 @@
         </button>
       </ng-container>
 
-      <!-- User Profile Quick Access -->
-      <div class="mt-4 pt-4 border-t border-gray-200">
-        <span *ngIf="open" class="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider block">
-          Quick Links
-        </span>
-        <button class="group relative flex items-center w-full px-4 py-3 rounded-lg 
-                       transition-all duration-300 hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-indigo-500 text-gray-600 shadow"
-                (click)="goHome()">
-          <i class="fa fa-home text-lg transition-transform duration-300 group-hover:scale-125 group-hover:text-white"></i>
-          <span *ngIf="open" 
-                class="ml-4 font-medium text-gray-700 group-hover:text-white transition-all duration-300">
-            View as User
-          </span>
-          <span *ngIf="!open"
-                class="absolute left-full top-1/2 -translate-y-1/2 ml-2 bg-indigo-600 text-white text-xs font-medium rounded px-2 py-1 shadow-lg 
-                       opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300 whitespace-nowrap">
-            View as User
-          </span>
-        </button>
-      </div>
+
     </ng-container>
 
   </nav>
