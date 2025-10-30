@@ -14,7 +14,6 @@ export class PostFeed implements OnInit {
 
   constructor(private postService: PostService,private injector: Injector) {}
    toggleComments(post: any) {
-    console.log(post.showComments);
     post.showComments = !post.showComments;
   }
 
@@ -81,8 +80,6 @@ loadUserId() {
   //     });
   //   }
   // }
-
-  
 deletePost(postId: number) {
   const user = localStorage.getItem('user');
   if (!user) { alert('User not logged in'); return; }

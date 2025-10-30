@@ -4,9 +4,21 @@
 <!-- Show Topbar + Sidebar only if NOT login/register -->
 <div *ngIf="showLayout; else noLayout" class="h-screen flex flex-col">
   <app-topbar></app-topbar>
-  <div class="flex flex-1">
+  
+  <!-- ✅ CONDITIONAL LAYOUT BASED ON ROLE -->
+  
+  <!-- USER LAYOUT (Default view) -->
+  <div *ngIf="!isAdmin()" class="flex flex-1">
     <app-sidebar></app-sidebar>
     <main class="flex-1 p-6 overflow-y-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- ADMIN LAYOUT (Different sidebar, wider content) -->
+  <div *ngIf="isAdmin()" class="flex flex-1 bg-gray-50">
+    <app-sidebar></app-sidebar>
+    <main class="flex-1 overflow-y-auto">
       <router-outlet></router-outlet>
     </main>
   </div>

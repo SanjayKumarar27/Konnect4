@@ -1,0 +1,107 @@
+<div class="admin-users-container">
+  <!-- Header -->
+  <div class="header">
+    <button class="btn-back" (click)="goBack()">
+      <i class="fa fa-arrow-left"></i> Back to Dashboard
+    </button>
+    <h1>👥 Manage Users</h1>
+  </div>
+
+  <!-- Search -->
+  <div class="search-container">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="filterUsers()"
+      placeholder="Search users by name or username..."
+      class="search-input"
+    />
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
+
+  <!-- Users List -->
+  <div *ngIf="!loading && filteredUsers.length > 0" class="users-list">
+    <div *ngFor="let user of filteredUsers" class="user-card">
+      <img
+        [src]="user.profileImageUrl || 'assets/default-avatar.png'"
+        alt="{{ user.username }}"
+        class="user-avatar"
+      />
+      <div class="user-info">
+        <h3>{{ user.fullName || user.username }}</h3>
+        <p class="username">@{{ user.username }}</p>
+        <div class="user-stats">
+          <span><i class="fa fa-file"></i> {{ user.postsCount }} Posts</span>
+          <span><i class="fa fa-users"></i> {{ user.followersCount }} Followers</span>
+          <span><i class="fa fa-clock"></i> Joined {{ user.createdAt | date: 'MMM d, y' }}</span>
+        </div>
+        <span *ngIf="user.role === 'Admin'" class="badge-admin">Admin</span>
+      </div>
+      <div class="user-actions">
+        <button class="btn btn-info" (click)="selectUser(user)">
+          <i class="fa fa-eye"></i> View
+        </button>
+        <button
+          *ngIf="user.role !== 'Admin'"
+          class="btn btn-danger"
+          (click)="deleteUser(user)"
+        >
+          <i class="fa fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredUsers.length === 0" class="empty-state">
+    <p>No users found</p>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div *ngIf="showUserProfile && selectedUser" class="modal-overlay" (click)="closeProfile()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="btn-close" (click)="closeProfile()">✕</button>
+      
+      <div class="profile-header">
+        <img
+          [src]="selectedUser.profileImageUrl || 'assets/default-avatar.png'"
+          alt="{{ selectedUser.username }}"
+          class="profile-avatar"
+        />
+        <h2>{{ selectedUser.fullName || selectedUser.username }}</h2>
+        <p class="username">@{{ selectedUser.username }}</p>
+        <span *ngIf="selectedUser.role === 'Admin'" class="badge-admin">Admin</span>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat">
+          <span class="value">{{ selectedUser.postsCount }}</span>
+          <span class="label">Posts</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ selectedUser.followersCount }}</span>
+          <span class="label">Followers</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ selectedUser.createdAt | date: 'MMM d, y' }}</span>
+          <span class="label">Joined</span>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button
+          *ngIf="selectedUser.role !== 'Admin'"
+          class="btn btn-danger btn-large"
+          (click)="deleteUser(selectedUser)"
+        >
+          <i class="fa fa-trash"></i> Delete User Account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
