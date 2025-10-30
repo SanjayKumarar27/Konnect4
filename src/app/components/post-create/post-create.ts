@@ -22,6 +22,7 @@ isSubmitting = false;
    private emojiSub!: Subscription;
   emojiInput$ = new BehaviorSubject<string>('');
   avatarUrl = `https://ui-avatars.com/api/?name=User&background=0A66C2&color=fff`;
+  
 
   constructor(private postService: PostService, private router: Router) {}
 

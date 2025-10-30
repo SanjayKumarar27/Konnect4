@@ -45,7 +45,7 @@ import { Explore } from './components/explore/explore';
     EmojiPicker,
     ChatList,
     ChatRoom,
-    Explore
+    Explore,
   ],
   imports: [
     BrowserModule,
