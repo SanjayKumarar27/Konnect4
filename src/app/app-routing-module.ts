@@ -14,6 +14,10 @@ import { UserFollowing } from './user-following/user-following';
 import { ChatList } from './chat-list/chat-list';
 import { ChatRoom } from './chat-room/chat-room';
 import { Explore } from './components/explore/explore';
+import { AdminDashboardComponent } from './components/admin-dashboard-component/admin-dashboard-component';
+import { AdminUserComponent } from './components/admin-user-component/admin-user-component';
+import { AdminPostsComponent } from './components/admin-posts-component/admin-posts-component';
+import { AdminGuard } from './admin-guard-guard';
 
 
 const routes: Routes = [
@@ -31,6 +35,12 @@ const routes: Routes = [
   // Chat routes
   { path: 'chats', component: ChatList, canActivate: [AuthGuard] },
   { path: 'chat/:id', component: ChatRoom, canActivate: [AuthGuard] },
+
+    // ✅ ADMIN ROUTES
+  { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'admin/users', component: AdminUserComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'admin/posts', component: AdminPostsComponent, canActivate: [AuthGuard, AdminGuard] },
+
 
   // Default redirect
   { path: '', redirectTo: '/home', pathMatch: 'full' },

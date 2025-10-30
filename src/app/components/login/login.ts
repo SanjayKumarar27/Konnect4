@@ -53,7 +53,8 @@ export class Login implements OnInit {
         userId: user.userId,       // <- store userId
         email: user.email,
         username: user.username,
-        fullName: user.fullName
+        fullName: user.fullName, 
+        role: user.role,
       }));
 
       console.log('Login successful:', user);

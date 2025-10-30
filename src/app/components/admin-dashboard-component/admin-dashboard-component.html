@@ -1,0 +1,111 @@
+<div class="admin-dashboard">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1>📊 Admin Dashboard</h1>
+    <p>Monitor and manage your platform</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading" class="dashboard-content">
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon users-icon">👥</div>
+        <div class="stat-info">
+          <h3>Total Users</h3>
+          <p class="stat-value">{{ dashboard.totalUsers }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon posts-icon">📝</div>
+        <div class="stat-info">
+          <h3>Total Posts</h3>
+          <p class="stat-value">{{ dashboard.totalPosts }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon comments-icon">💬</div>
+        <div class="stat-info">
+          <h3>Total Comments</h3>
+          <p class="stat-value">{{ dashboard.totalComments }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon active-icon">🟢</div>
+        <div class="stat-info">
+          <h3>Active Today</h3>
+          <p class="stat-value">{{ dashboard.activeUsersToday }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Management Buttons -->
+    <div class="management-buttons">
+      <button class="btn btn-primary" (click)="goToUsers()">
+        <i class="fa fa-users"></i> Manage Users
+      </button>
+      <button class="btn btn-danger" (click)="goToAllPosts()">
+        <i class="fa fa-file"></i> Manage Posts
+      </button>
+    </div>
+
+    <!-- Recent Users Section -->
+    <div class="section">
+      <h2>Recent Users</h2>
+      <div class="users-table">
+        <div class="table-header">
+          <div class="col-username">Username</div>
+          <div class="col-posts">Posts</div>
+          <div class="col-followers">Followers</div>
+          <div class="col-joined">Joined</div>
+        </div>
+        <div class="table-body">
+          <div *ngFor="let user of dashboard.recentUsers" class="table-row">
+            <div class="col-username">
+              <img [src]="user.profileImageUrl || 'assets/default-avatar.png'" 
+                   class="avatar" alt="{{ user.username }}">
+              <span>{{ user.username }}</span>
+            </div>
+            <div class="col-posts">{{ user.postsCount }}</div>
+            <div class="col-followers">{{ user.followersCount }}</div>
+            <div class="col-joined">{{ user.createdAt | date:'short' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Posts Section -->
+    <div class="section">
+      <h2>Recent Posts</h2>
+      <div class="posts-table">
+        <div class="table-header">
+          <div class="col-user">Author</div>
+          <div class="col-content">Content</div>
+          <div class="col-stats">Likes</div>
+          <div class="col-stats">Comments</div>
+          <div class="col-date">Created</div>
+        </div>
+        <div class="table-body">
+          <div *ngFor="let post of dashboard.recentPosts" class="table-row">
+            <div class="col-user">{{ post.username }}</div>
+            <div class="col-content">
+              {{ (post.content | slice:0:50) + (post.content.length > 50 ? '...' : '') }}
+            </div>
+            <div class="col-stats">{{ post.likesCount }}</div>
+            <div class="col-stats">{{ post.commentsCount }}</div>
+            <div class="col-date">{{ post.createdAt | date:'short' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

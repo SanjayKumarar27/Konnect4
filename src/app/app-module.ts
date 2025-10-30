@@ -24,6 +24,10 @@ import { EmojiPicker } from './components/emoji-picker/emoji-picker';
 import { ChatRoom } from './chat-room/chat-room';
 import { ChatList } from './chat-list/chat-list';
 import { Explore } from './components/explore/explore';
+import { AdminDashboardComponent } from './components/admin-dashboard-component/admin-dashboard-component';
+import { AdminUserComponent } from './components/admin-user-component/admin-user-component';
+import { AdminPostsComponent } from './components/admin-posts-component/admin-posts-component';
+
 
 
 @NgModule({
@@ -45,7 +49,10 @@ import { Explore } from './components/explore/explore';
     EmojiPicker,
     ChatList,
     ChatRoom,
-    Explore
+    Explore,
+    AdminDashboardComponent,
+    AdminUserComponent,
+    AdminPostsComponent
   ],
   imports: [
     BrowserModule,
