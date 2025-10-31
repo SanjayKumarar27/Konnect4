@@ -62,15 +62,16 @@
         <img [src]="post.profileImageUrl || 'assets/default-avatar.png'" alt="@{{ post.username }}" />
       </div>
 
-      <div class="post-content-wrapper">
-        <div class="post-header">
-          <h3 class="author">@{{ post.username }}</h3>
-          <span class="date">{{ post.createdAt | date: 'MMM d, y' }}</span>
-        </div>
-
-        <p class="content">
-          {{ (post.content | slice:0:140) + (post.content.length > 140 ? '...' : '') }}
-        </p>
+      <div class="post-content">
+        {{ (post.content | slice:0:150) + (post.content.length > 150 ? '...' : '') }}
+      </div>
+       <img *ngIf="post.imageUrl" 
+         [src]="post.imageUrl" 
+         class="mt-3 rounded-xl w-full max-h-80 object-contain shadow-sm" />
+      <div class="post-stats">
+        <span><i class="fa fa-thumbs-up"></i> {{ post.likesCount }}</span>
+        <span><i class="fa fa-comment"></i> {{ post.commentsCount }}</span>
+      </div>
 
         <div class="stats">
           <span class="stat-item">Likes {{ post.likesCount }}</span>
