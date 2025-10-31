@@ -1,35 +1,65 @@
 <div class="admin-posts-container">
-  <!-- Header -->
-  <div class="header">
-    <button class="btn-back" (click)="goBack()">
-      <i class="fa fa-arrow-left"></i> Back to Dashboard
-    </button>
-    <h1>📋 Manage Posts</h1>
-  </div>
+  <!-- PREMIUM ANIMATED HEADER -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="title-wrapper">
+        <h1 class="dashboard-title">
+          <span class="title-text">Manage Posts</span>
+        </h1>
+      </div>
+      <button class="btn-back-animated" (click)="goBack()">
+        Back to Dashboard
+      </button>
+    </div>
+  </header>
+<!-- SPACING AFTER HEADER -->
+  <div class="section-spacing"></div>
 
-  <!-- Search -->
+ <div class="search-wrapper">
   <div class="search-container">
+    <!-- ICON WRAPPER -->
+    <div class="search-icon-wrapper">
+    </div>
+
+    <!-- INPUT -->
     <input
+      #searchInput
       type="text"
       [(ngModel)]="searchQuery"
-      (input)="filterPosts()"
-      placeholder="Search posts by content or author..."
+      (ngModelChange)="onSearchInput($event)"
       class="search-input"
+      id="search-input"
+      autocomplete="off"
     />
-  </div>
 
-  <!-- Loading State -->
-  <div *ngIf="loading" class="loading-container">
+    <!-- FLOATING LABEL -->
+    <label 
+      [class.floating]="hasSearchText"
+      for="search-input" 
+      class="search-label"
+    >
+      Search by content or author...
+    </label>
+  </div>
+</div>
+  <!-- SPACING AFTER SEARCH -->
+  <div class="section-spacing"></div>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading-state">
     <div class="spinner"></div>
     <p>Loading posts...</p>
   </div>
 
-  <!-- Posts Grid -->
+  <!-- POSTS GRID -->
   <div *ngIf="!loading && filteredPosts.length > 0" class="posts-grid">
-    <div *ngFor="let post of filteredPosts" class="post-card">
-      <div class="post-header">
-        <h3>{{ post.username }}</h3>
-        <span class="post-date">{{ post.createdAt | date: 'MMM d, y' }}</span>
+    <div 
+      *ngFor="let post of filteredPosts; let i = index" 
+      class="post-card"
+      [style.--delay]="i * 0.08 + 's'"
+    >
+      <div class="user-image">
+        <img [src]="post.profileImageUrl || 'assets/default-avatar.png'" alt="@{{ post.username }}" />
       </div>
 
       <div class="post-content">
@@ -43,37 +73,37 @@
         <span><i class="fa fa-comment"></i> {{ post.commentsCount }}</span>
       </div>
 
-      <div class="post-actions">
-        <button class="btn btn-info" (click)="selectPost(post)">
-          <i class="fa fa-eye"></i> View
-        </button>
-        <button class="btn btn-danger" (click)="deletePost(post)">
-          <i class="fa fa-trash"></i> Delete
-        </button>
+        <div class="stats">
+          <span class="stat-item">Likes {{ post.likesCount }}</span>
+          <span class="stat-item">Comments {{ post.commentsCount }}</span>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-view" (click)="selectPost(post)">View Details</button>
+          <button class="btn btn-delete" (click)="deletePost(post)">Delete</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Empty State -->
+  <!-- EMPTY -->
   <div *ngIf="!loading && filteredPosts.length === 0" class="empty-state">
+    <div class="empty-icon">Empty</div>
     <p>No posts found</p>
   </div>
 
-  <!-- Post Detail Modal -->
-  <div *ngIf="showPostDetail && selectedPost" class="modal-overlay" (click)="closeDetail()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <button class="btn-close" (click)="closeDetail()">✕</button>
-
-      <div class="post-detail-header">
-        <h2>Post by {{ selectedPost.username }}</h2>
+  <!-- MODAL -->
+  <div *ngIf="showPostDetail && selectedPost" class="modal-backdrop" (click)="closeDetail()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeDetail()">Close</button>
+      <div class="modal-header">
+        <h2>Post by @{{ selectedPost.username }}</h2>
         <p class="date">{{ selectedPost.createdAt | date: 'medium' }}</p>
       </div>
-
-      <div class="post-detail-content">
+      <div class="modal-body">
         <p>{{ selectedPost.content }}</p>
       </div>
-
-      <div class="post-detail-stats">
+      <div class="modal-stats">
         <div class="stat">
           <span class="value">{{ selectedPost.likesCount }}</span>
           <span class="label">Likes</span>
@@ -83,12 +113,9 @@
           <span class="label">Comments</span>
         </div>
       </div>
-
-      <div class="post-detail-actions">
-        <button class="btn btn-danger btn-large" (click)="deletePost(selectedPost)">
-          <i class="fa fa-trash"></i> Delete This Post
-        </button>
-      </div>
+      <button class="btn btn-danger btn-delete-full" (click)="deletePost(selectedPost)">
+        Delete This Post
+      </button>
     </div>
   </div>
 </div>

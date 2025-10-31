@@ -1,8 +1,7 @@
-// src/app/components/admin/admin-posts/admin-posts.ts
+// src/app/components/admin/admin-posts/admin-posts.component.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from '../../services/admin-service';
-
 
 @Component({
   selector: 'app-admin-posts',
@@ -18,6 +17,9 @@ export class AdminPostsComponent implements OnInit {
   searchQuery: string = '';
   selectedPost: any = null;
   showPostDetail: boolean = false;
+
+  // NEW: For floating label
+  hasSearchText: boolean = false;
 
   constructor(
     private adminService: AdminService,
@@ -55,8 +57,15 @@ export class AdminPostsComponent implements OnInit {
     });
   }
 
+  // UPDATED: Called on every input change
+  onSearchInput(value: string) {
+    this.searchQuery = value;
+    this.hasSearchText = value.trim().length > 0;
+    this.filterPosts();
+  }
+
   filterPosts() {
-    const query = this.searchQuery.toLowerCase();
+    const query = this.searchQuery.toLowerCase().trim();
     this.filteredPosts = this.posts.filter(p =>
       p.content.toLowerCase().includes(query) ||
       p.username.toLowerCase().includes(query)

@@ -91,6 +91,9 @@ export class AdminUserComponent implements OnInit {
       }
     });
   }
+  onImageError(event: any) {
+  event.target.src = 'assets/default-avatar.png';
+}
 
   goBack() {
     this.router.navigate(['/admin/dashboard']);
