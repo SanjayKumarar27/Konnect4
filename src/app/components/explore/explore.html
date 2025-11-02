@@ -27,9 +27,14 @@
           class="avatar"
           (click)="goToProfile(post.userId)"
         />
-        <div class="meta">
-          <strong (click)="goToProfile(post.userId)" class="clickable">{{ post.username }}</strong>
-          <span class="date">{{ formatDate(post.createdAt) }}</span>
+        <div class="flex flex-col justify-between">
+
+          <div class="meta">
+            <strong (click)="goToProfile(post.userId)" class="clickable">{{ post.username }}</strong>
+          </div>
+          <div>
+            <span class="date">{{ formatDate(post.createdAt) }}</span>
+          </div>
         </div>
       </header>
 

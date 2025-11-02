@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { AuthService } from './auth.service'; // ✅ Import AuthService
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 export interface Message {
@@ -69,13 +70,18 @@ export class ChatService {
   private connectionStateSubject = new BehaviorSubject<boolean>(false);
   public connectionState$ = this.connectionStateSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {} // ✅ Inject AuthService
 
   public async startConnection(userId: number): Promise<void> {
     this.currentUserId = userId;
 
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(`${this.hubUrl}?userId=${userId}`)
+      .withUrl(`${this.hubUrl}?userId=${userId}`, {
+        // ✅ Provide the token to SignalR
+        accessTokenFactory: () => {
+          return this.authService.getCurrentToken() || '';
+        }
+      })
       .withAutomaticReconnect()
       .configureLogging(LogLevel.Information)
       .build();

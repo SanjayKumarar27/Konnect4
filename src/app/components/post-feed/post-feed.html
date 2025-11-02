@@ -7,16 +7,22 @@
     <!-- Post Header -->
     <div class="flex items-center mb-2 justify-between">
       <div class="flex items-center mb-2 ">
-        <img class="w-10 h-10 rounded-full border border-indigo-300"
-             src="https://ui-avatars.com/api/?name={{post.username}}" [routerLink]="['/profile',post.postUserId]" />
-        <div>
-          <div class="font-semibold text-gray-800">
-            {{ post.username ?? 'Anonymous' }}
+         <img
+          [src]="post.profileImageUrl ||
+                 'https://ui-avatars.com/api/?name=' + post.username + '&background=0A66C2&color=fff'"
+          [alt]="post.username"
+          class="avatar"
+          (click)="goToProfile(post.postUserId)"
+        />
+        <div class="flex flex-col justify-between">
+
+          <div class="meta">
+            <strong (click)="goToProfile(post.postUserId)" class="clickable">{{ post.username }}</strong>
           </div>
-          <div class="text-xs text-gray-400">
-            {{ post.createdAt | date:'medium' }}
+          <div>
+            <span class="date">{{ formatDate(post.createdAt) }}</span>
           </div>
-        </div>  
+        </div>
       </div>
 
       <!-- Options -->

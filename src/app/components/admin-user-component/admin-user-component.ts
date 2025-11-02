@@ -64,6 +64,7 @@ export class AdminUserComponent implements OnInit {
   }
 
   selectUser(user: any) {
+    
     this.selectedUser = user;
     this.showUserProfile = true;
   }

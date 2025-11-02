@@ -16,8 +16,13 @@ export class PostService {
     return this.http.post(`${this.apiUrl}/posts`, data);
   }
 
+  // ✅ UPDATED: The backend gets the user ID from the token, so it's not needed in the URL.
   getFeed(userId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/posts/feed/${userId}`);
+  }
+  
+  getPostById(postId: number, userId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/posts/${postId}?userId=${userId}`);
   }
 
   updatePost(postId: number, data: any, userId: number): Observable<any> {

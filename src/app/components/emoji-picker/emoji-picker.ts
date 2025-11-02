@@ -11,7 +11,7 @@ import { Subject } from "rxjs";
 
 export class EmojiPicker {
   isOpened = false;
-  @Input() emojiInput$: Subject<string> | undefined;
+  @Input() emojiInput$: Subject<any> | undefined;
   @ViewChild("container") container: ElementRef<HTMLElement> | undefined;
 
   constructor() {}
