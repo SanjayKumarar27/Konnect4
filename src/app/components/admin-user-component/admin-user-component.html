@@ -1,0 +1,158 @@
+<div class="admin-users-container">
+  <!-- PREMIUM ANIMATED HEADER -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="title-wrapper">
+        <h1 class="dashboard-title">
+          <span class="title-text">Manage Users</span>
+        </h1>
+      </div>
+      <button class="btn-back-animated" (click)="goBack()">
+        Back to Dashboard
+      </button>
+    </div>
+  </header>
+
+  <!-- SPACING -->
+  <div class="section-spacing"></div>
+
+  <!-- SEARCH BAR -->
+  <div class="search-wrapper">
+    <div class="search-container">
+      <div class="search-icon-wrapper"></div>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="filterUsers()"
+        class="search-input"
+        id="user-search-input"
+        autocomplete="off"
+        placeholder=" "
+      />
+      <label 
+        [class.floating]="searchQuery"
+        for="user-search-input" 
+        class="search-label"
+      >
+        Search by name or @username...
+      </label>
+    </div>
+  </div>
+
+  <!-- SPACING -->
+  <div class="section-spacing"></div>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
+
+  <!-- USERS GRID -->
+  <div *ngIf="!loading && filteredUsers.length > 0" class="users-grid">
+    <div 
+      *ngFor="let user of filteredUsers; let i = index" 
+      class="user-card"
+      [style.--delay]="i * 0.08 + 's'"
+    >
+      <!-- AVATAR + ADMIN BADGE -->
+      <div class="user-avatar-wrapper">
+        <img 
+          [src]="user.profileImageUrl || 'https://img.freepik.com/premium-vector/gray-picture-person-with-gray-background_1197690-22.jpg?semt=ais_hybrid&w=740&q=80'"
+          alt="@{{ user.username }}" 
+          class="user-avatar"
+          (error)="onImageError($event)"
+         [routerLink]="['/profile',user.userId]"
+        />
+        <span *ngIf="user.role === 'Admin'" class="badge-admin">ADMIN</span>
+      </div>
+
+      <!-- USER INFO -->
+      <div class="user-info">
+        <h3 class="full-name">{{ user.fullName || user.username }}</h3>
+        <p class="username">@{{ user.username }}</p>
+
+        <div class="user-stats">
+          <div class="stat">
+            <span class="value">{{ user.postsCount }}</span>
+            <span class="label">Posts</span>
+          </div>
+          <div class="stat">
+            <span class="value">{{ user.followersCount }}</span>
+            <span class="label">Followers</span>
+          </div>
+          <div class="stat">
+            <span class="value">{{ user.createdAt | date:'MMM d, y' }}</span>
+            <span class="label">Joined</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="user-actions">
+        <button class="btn btn-view" (click)="selectUser(user) ">
+          View
+        </button>
+        <button 
+          *ngIf="user.role !== 'Admin'" 
+          class="btn btn-delete" 
+          (click)="deleteUser(user)"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div *ngIf="!loading && filteredUsers.length === 0" class="empty-state">
+    <div class="empty-icon">Empty</div>
+    <p>No users found</p>
+  </div>
+
+  <!-- MODAL: USER PROFILE -->
+  <div *ngIf="showUserProfile && selectedUser" class="modal-backdrop" (click)="closeProfile()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeProfile()">Close</button>
+
+      <div class="modal-header">
+        <div class="profile-avatar-large">
+          <img 
+            [src]="selectedUser.profileImageUrl|| 'https://img.freepik.com/premium-vector/gray-picture-person-with-gray-background_1197690-22.jpg?semt=ais_hybrid&w=740&q=80'"
+            alt="@{{ selectedUser.username }}" 
+            class="avatar-img"
+            (error)="onImageError($event)"
+          />
+        </div>
+        <h2>{{ selectedUser.fullName || selectedUser.username }}</h2>
+        <p class="username">@{{ selectedUser.username }}</p>
+        <span *ngIf="selectedUser.role === 'Admin'" class="badge-admin">ADMIN</span>
+      </div>
+
+      <div class="modal-stats">
+        <div class="stat">
+          <span class="value">{{ selectedUser.postsCount }}</span>
+          <span class="label">Posts</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ selectedUser.followersCount }}</span>
+          <span class="label">Followers</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ selectedUser.createdAt | date:'MMM d, y' }}</span>
+          <span class="label">Joined</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button 
+          *ngIf="selectedUser.role !== 'Admin'"
+          class="btn btn-danger btn-delete-full" 
+          (click)="deleteUser(selectedUser)"
+        >
+          Delete User Account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

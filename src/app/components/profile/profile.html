@@ -2,10 +2,10 @@
 
   <!-- Profile Header -->
   <div class="flex items-center gap-4 mb-6 p-4 bg-white rounded-xl shadow-lg transform transition-all hover:scale-[1.01]">
-    <img *ngIf="profile?.profileImageUrl" [src]="profile?.profileImageUrl"
+    <img *ngIf="profile?.profileImageUrl" [src]="profile?.profileImageUrl || 'https://img.freepik.com/premium-vector/gray-picture-person-with-gray-background_1197690-22.jpg?semt=ais_hybrid&w=740&q=80'"
          class="w-24 h-24 rounded-full border-4 border-indigo-500 shadow-md transition-transform duration-300 hover:scale-105"
          alt="Profile" />
-    <img *ngIf="!profile?.profileImageUrl" src="assets/default-avatar.png"
+    <img *ngIf="!profile?.profileImageUrl" src="https://img.freepik.com/premium-vector/gray-picture-person-with-gray-background_1197690-22.jpg?semt=ais_hybrid&w=740&q=80"
          class="w-24 h-24 rounded-full border-4 border-indigo-500 shadow-md transition-transform duration-300 hover:scale-105"
          alt="Default Avatar" />
 

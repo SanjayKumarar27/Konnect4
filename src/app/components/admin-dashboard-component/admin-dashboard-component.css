@@ -1,0 +1,482 @@
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+
+.admin-dashboard {
+  margin-left: 250px !important;     /* forces the offset */
+  transition: margin-left 0.3s ease;
+  padding: 2rem;
+  padding-top: 6rem !important;      /* clears the fixed top-bar */
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;               /* creates a stacking context */
+  z-index: 10;                       /* above sidebar (usually z-index 20+) */
+  background: #f8fafc;              /* ensures no transparent gap */
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    margin-left: 0 !important;
+    padding: 1rem;
+    padding-top: 5rem !important;
+    z-index: 10;
+    background: #f8fafc;
+  }
+}
+@media (max-width: 768px) {
+  .admin-dashboard {
+    margin-left: 0;
+    padding: 1rem;
+    padding-top: 5rem;      /* ADDED: For mobile topbar */
+  }
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================
+   SHARED STYLES
+   ============================================ */
+
+/* SORTABLE TABLE HEADERS */
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 2.5rem !important; /* space for icon */
+  transition: background 0.2s;
+}
+
+th.sortable:hover {
+  background-color: #f1f5f9;
+}
+
+th.active {
+  background-color: #e0e7ff;
+  font-weight: 700;
+  color: #4f46e5;
+}
+
+.sort-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+  color: #6366f1;
+  font-size: 0.9rem;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  color: #64748b;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #f1f5f9;
+  border-top: 4px solid #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background: #6366f1;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #4f46e5;
+}
+
+.btn-secondary {
+  background: #64748b;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #475569;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+/* ============================================
+   PREMIUM ANIMATED HEADER – 2025 STYLE
+   ============================================ */
+.dashboard-header {
+  margin-bottom: 2rem;
+  padding: 3rem 0 1.8rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  animation: slideInLeft 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.dashboard-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin: 0 0 0.6rem;
+  position: relative;
+  display: inline-block;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.title-text {
+  color: #4f46e5;
+  background: linear-gradient(90deg, #4f46e5, #6366f1, #4f46e5);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  position: relative;
+  animation: 
+    textReveal 1.2s ease-out 0.3s forwards,
+    gradientFlow 4s ease-in-out infinite;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Typewriter-style reveal */
+.title-text::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #4f46e5;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: revealMask 1.2s ease-out 0.3s forwards;
+  mix-blend-mode: multiply;
+  opacity: 0.15;
+}
+
+/* Floating accent line */
+/* Replace this block in your existing CSS */
+.dashboard-title::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  width: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4f46e5, #6366f1, #4f46e5);
+  background-size: 200%;
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
+  /* This makes it grow to full width */
+  animation: underlineExpand 1.5s ease-out 1s forwards,
+              underlinePulse 2s ease-in-out 2.5s infinite;
+}
+
+/* Subtle glow on hover */
+.header-content:hover .title-text {
+  filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.3));
+  transform: translateY(-1px);
+}
+
+.header-content:hover .dashboard-title::after {
+  animation-play-state: paused;
+  box-shadow: 0 0 20px rgba(79, 70, 229, 0.6);
+  background-position: 100%;
+}
+
+/* Keyframes */
+@keyframes slideInLeft {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes textReveal {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes revealMask {
+  to { transform: scaleX(1); }
+}
+
+@keyframes gradientFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes underlineExpand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    width: 100%; /* Full width of the title */
+    opacity: 1;
+  }
+}
+
+@keyframes underlinePulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(79, 70, 229, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(79, 70, 229, 0.6); }
+}
+
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-content { padding: 0 1rem; }
+  .dashboard-title { font-size: 1.9rem; }
+  .title-text { font-size: inherit; }
+  .dashboard-subtitle { font-size: 0.95rem; }
+}
+
+/* ============================================
+   STATS GRID
+   ============================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #6366f1;
+}
+
+.stat-info h3 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  margin: 0 0 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.stat-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* ============================================
+   MANAGEMENT BUTTONS
+   ============================================ */
+.management-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.management-buttons .btn {
+  flex: 1;
+  justify-content: center;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .management-buttons {
+    flex-direction: column;
+  }
+}
+
+/* ============================================
+   SECTIONS
+   ============================================ */
+.section {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+.table-container {
+  overflow-x: auto;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.users-table,
+.posts-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.875rem;
+}
+
+th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  font-size: 0.75rem;
+}
+
+tr:hover {
+  background: #f1f5f9;
+}
+
+.col-username {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.col-content {
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Adjust column widths for posts table */
+.posts-table th:nth-child(1),
+.posts-table td:nth-child(1) {
+  width: 15%;
+}
+
+.posts-table th:nth-child(2),
+.posts-table td:nth-child(2) {
+  width: 40%;
+}
+
+.posts-table th:nth-child(3),
+.posts-table th:nth-child(4),
+.posts-table td:nth-child(3),
+.posts-table td:nth-child(4) {
+  width: 10%;
+}
+
+.posts-table th:nth-child(5),
+.posts-table td:nth-child(5) {
+  width: 25%;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  th, td {
+    padding: 0.75rem;
+  }
+
+  .col-content {
+    max-width: 200px;
+  }
+}

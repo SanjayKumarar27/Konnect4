@@ -7,7 +7,7 @@ import { PostCreateComponent } from './components/post-create/post-create';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PostFeed } from './components/post-feed/post-feed';
 import { PostUpdate } from './components/post-update/post-update';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 import { TopbarComponent } from './components/topbar/topbar';
@@ -24,6 +24,11 @@ import { EmojiPicker } from './components/emoji-picker/emoji-picker';
 import { ChatRoom } from './chat-room/chat-room';
 import { ChatList } from './chat-list/chat-list';
 import { Explore } from './components/explore/explore';
+import { AdminDashboardComponent } from './components/admin-dashboard-component/admin-dashboard-component';
+import { AdminUserComponent } from './components/admin-user-component/admin-user-component';
+import { AdminPostsComponent } from './components/admin-posts-component/admin-posts-component';
+import { JwtInterceptor } from './jwt-interceptor-interceptor';
+
 
 
 @NgModule({
@@ -46,6 +51,10 @@ import { Explore } from './components/explore/explore';
     ChatList,
     ChatRoom,
     Explore,
+    AdminDashboardComponent,
+    AdminUserComponent,
+    AdminPostsComponent,
+    Testcomponents
   ],
   imports: [
     BrowserModule,
@@ -53,10 +62,17 @@ import { Explore } from './components/explore/explore';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    PickerModule
+    PickerModule,
+    
   ],
   providers: [
-    provideHttpClient()
+    provideHttpClient(),
+  
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [App]
 })

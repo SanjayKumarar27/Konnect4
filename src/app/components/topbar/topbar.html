@@ -1,23 +1,40 @@
-<header class="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 shadow-lg p-3 flex items-center justify-between animate-fadeIn fixed left-0 right-0 z-50">
+<header class="bg-gradient-to-r shadow-lg p-3 flex items-center justify-between animate-fadeIn fixed left-0 right-0 z-50"
+        [ngClass]="isAdmin() ? 'from-indigo-600 via-purple-600 to-indigo-700' : 'from-indigo-600 via-purple-600 to-indigo-700'">
   
   <!-- Logo -->
   <div class="w-1/3 text-left pl-4">
     <span class="text-2xl font-extrabold text-white tracking-wide cursor-pointer 
-                 transition-transform duration-500 hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]">
-      Konnect-4
+                 transition-transform duration-500 hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]"
+          (click)="isAdmin() ? goToAdminDashboard() : goToProfile()">
+      <span *ngIf="!isAdmin()">Konnect-4</span>
+      <span *ngIf="isAdmin()">Konnect-4</span>
     </span>
   </div>
 
-  <!-- Search Component -->
-<div class="w-1/3">
-  <app-search></app-search>
-</div>
+  <!-- Search Component (only for regular users) -->
+  <div class="w-1/3" *ngIf="!isAdmin()">
+    <app-search></app-search>
+  </div>
 
-  <!-- Profile Icon -->
+  <!-- Admin Stats (only for admins) -->
+  <div class="w-1/3 text-center" *ngIf="isAdmin()">
+    <span class="inline-block bg-white/20 text-white px-4 py-2 rounded-full font-semibold text-sm">
+       Admin Mode Active
+    </span>
+  </div>
+
+  <!-- Right Side: Profile & Role -->
   <div class="w-1/3 text-right pr-4 flex items-center justify-end gap-3">
-    <a class="inline-block ml-3 p-1 rounded-full hover:scale-110 transform transition duration-300 hover:ring-2 hover:ring-white hover:shadow-lg" 
-      (click)="gotoprofile()" >
-      <i class="fa fa-user-circle fa-2x text-white" ></i>
+    <div class="flex items-center gap-2">
+      <span *ngIf="!isAdmin()" class="hidden sm:inline-block text-white/80 text-sm font-semibold"></span>
+      <span *ngIf="isAdmin()" class="hidden sm:inline-block bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+         ADMIN
+      </span>
+    </div>
+
+    <a class="inline-block ml-3 p-1 rounded-full hover:scale-110 transform transition duration-300 hover:ring-2 hover:ring-white hover:shadow-lg cursor-pointer" 
+       (click)="goToProfile()">
+      <i class="fa fa-user-circle fa-2x text-white"></i>
     </a>
   </div>
 </header>

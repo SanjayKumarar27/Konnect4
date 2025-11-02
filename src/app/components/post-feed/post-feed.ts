@@ -1,5 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { PostService } from '../../services/post-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-feed',
@@ -10,11 +11,11 @@ import { PostService } from '../../services/post-service';
 export class PostFeed implements OnInit {
   posts: any[] = [];
     commentsComponent!:any;
-  userId!:number;  // Replace with logged-in user
+  userId!:number;  
+   // Replace with logged-in user
 
-  constructor(private postService: PostService,private injector: Injector) {}
+  constructor(private postService: PostService,private injector: Injector,private router: Router) {}
    toggleComments(post: any) {
-    console.log(post.showComments);
     post.showComments = !post.showComments;
   }
 
@@ -81,8 +82,6 @@ loadUserId() {
   //     });
   //   }
   // }
-
-  
 deletePost(postId: number) {
   const user = localStorage.getItem('user');
   if (!user) { alert('User not logged in'); return; }
@@ -110,9 +109,14 @@ deletePost(postId: number) {
 }
 
 
-
+goToProfile(userId: number): void {
+    this.router.navigate(['/profile', userId]);
+  }
 editPost(postId: number) {
   // Navigate to edit page
   window.location.href = `/update-post/${postId}`;
 }
+formatDate(date: string): string {
+    return new Date(date).toLocaleDateString();
+  }
 }

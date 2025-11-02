@@ -1,0 +1,158 @@
+<div class="admin-dashboard">
+  <!-- Header -->
+  <!-- Header -->
+<header class="dashboard-header">
+  <div class="header-content">
+    <h1 class="dashboard-title">
+      <span class="title-text">Admin Dashboard</span>
+    </h1>
+  </div>
+</header>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading dashboard data...</p>
+  </div>
+
+  <!-- Main Content -->
+  <main *ngIf="!loading" class="dashboard-content">
+    <!-- Stats Cards -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa fa-users"></i></div>
+        <div class="stat-info">
+          <h3>Total Users</h3>
+          <p class="stat-value">{{ dashboard.totalUsers }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa fa-pencil-alt"></i></div>
+        <div class="stat-info">
+          <h3>Total Posts</h3>
+          <p class="stat-value">{{ dashboard.totalPosts }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa fa-comments"></i></div>
+        <div class="stat-info">
+          <h3>Total Comments</h3>
+          <p class="stat-value">{{ dashboard.totalComments }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa fa-check-circle"></i></div>
+        <div class="stat-info">
+          <h3>Active Today</h3>
+          <p class="stat-value">{{ dashboard.activeUsersToday }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Management Buttons -->
+    <section class="management-buttons">
+      <button class="btn btn-primary" (click)="goToUsers()">
+        <i class="fa fa-users"></i> Manage Users
+      </button>
+      <button class="btn btn-secondary" (click)="goToAllPosts()">
+        <i class="fa fa-file-alt"></i> Manage Posts
+      </button>
+    </section>
+
+    <!-- Recent Users Section -->
+    <section class="section recent-users">
+      <h2>Recent Users</h2>
+      <div class="table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th class="sortable" (click)="sortBy('username')" [class.active]="sortColumn === 'username'">
+                Username
+                <span class="sort-icon" *ngIf="sortColumn === 'username'">
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
+              </th>
+              <th class="sortable" (click)="sortBy('postsCount')" [class.active]="sortColumn === 'postsCount'">
+                Posts
+                <span class="sort-icon" *ngIf="sortColumn === 'postsCount'">
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
+              </th>
+              <th class="sortable" (click)="sortBy('followersCount')" [class.active]="sortColumn === 'followersCount'">
+                Followers
+                <span class="sort-icon" *ngIf="sortColumn === 'followersCount'">
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
+              </th>
+              <th>Joined</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of dashboard.recentUsers">
+              <td class="col-username">
+                <img [src]="user.profileImageUrl || 'https://img.freepik.com/premium-vector/gray-picture-person-with-gray-background_1197690-22.jpg?semt=ais_hybrid&w=740&q=80'" class="avatar"
+                  alt="{{ user.username }}">
+                <span>{{ user.username }}</span>
+              </td>
+              <td>{{ user.postsCount }}</td>
+              <td>{{ user.followersCount }}</td>
+              <td>{{ user.createdAt | date:'short' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Recent Posts Section -->
+<section class="section recent-posts">
+  <h2>Recent Posts</h2>
+  <div class="table-container">
+    <table class="posts-table">
+      <thead>
+        <tr>
+          <th class="sortable" (click)="sortPostsBy('username')" [class.active]="postSortColumn === 'username'">
+            Author
+            <span class="sort-icon" *ngIf="postSortColumn === 'username'">
+              {{ postSortDir === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th>Content</th>
+          <th class="sortable" (click)="sortPostsBy('likesCount')" [class.active]="postSortColumn === 'likesCount'">
+            Likes
+            <span class="sort-icon" *ngIf="postSortColumn === 'likesCount'">
+              {{ postSortDir === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th class="sortable" (click)="sortPostsBy('commentsCount')" [class.active]="postSortColumn === 'commentsCount'">
+            Comments
+            <span class="sort-icon" *ngIf="postSortColumn === 'commentsCount'">
+              {{ postSortDir === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th class="sortable" (click)="sortPostsBy('createdAt')" [class.active]="postSortColumn === 'createdAt'">
+            Created
+            <span class="sort-icon" *ngIf="postSortColumn === 'createdAt'">
+              {{ postSortDir === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let post of dashboard.recentPosts">
+          <td>{{ post.username }}</td>
+          <td class="col-content">
+            {{ (post.content | slice:0:100) + (post.content.length > 100 ? '...' : '') }}
+          </td>
+          <td>{{ post.likesCount }}</td>
+          <td>{{ post.commentsCount }}</td>
+          <td>{{ post.createdAt | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+  </main>
+</div>

@@ -34,6 +34,12 @@ export class Login implements OnInit {
     console.log('Login ngOnInit: isAuthenticated =', this.authService.isAuthenticated());
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/feed']);
+      const user = this.authService.getCurrentUser();
+      if (user.role === 'Admin') {
+        this.router.navigate(['/admin/dashboard']);
+      } else {
+        this.router.navigate(['/home']);
+      }
     }
   }
 
@@ -53,13 +59,19 @@ export class Login implements OnInit {
         userId: user.userId,       // <- store userId
         email: user.email,
         username: user.username,
-        fullName: user.fullName
+        fullName: user.fullName, 
+        role: user.role,
       }));
 
       console.log('Login successful:', user);
       
       this.resetForm(); // Clear form fields
       this.router.navigate(['/feed']);
+      if (user.role === 'Admin') {
+        this.router.navigate(['/admin/dashboard']);
+      } else {
+        this.router.navigate(['/home']);
+      }
     },
       error: (err) => {
         this.errorMessage = 'Invalid email or password';
