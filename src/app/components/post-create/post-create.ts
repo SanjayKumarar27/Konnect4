@@ -20,6 +20,7 @@ isSubmitting = false;
   remainingChars = 1000;
   userId!: number; // Will be loaded from localStorage  
    private emojiSub!: Subscription;
+  
   emojiInput$ = new BehaviorSubject<string>('');  
   avatarUrl: string = '';
 

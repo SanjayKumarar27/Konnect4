@@ -54,6 +54,7 @@ import { JwtInterceptor } from './jwt-interceptor-interceptor';
     AdminDashboardComponent,
     AdminUserComponent,
     AdminPostsComponent,
+    Testcomponents
   ],
   imports: [
     BrowserModule,
