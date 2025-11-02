@@ -93,7 +93,7 @@
           <tbody>
             <tr *ngFor="let user of dashboard.recentUsers">
               <td class="col-username">
-                <img [src]="user.profileImageUrl || 'assets/default-avatar.png'" class="avatar"
+                <img [src]="user.profileImageUrl || 'https://img.freepik.com/premium-vector/gray-picture-person-with-gray-background_1197690-22.jpg?semt=ais_hybrid&w=740&q=80'" class="avatar"
                   alt="{{ user.username }}">
                 <span>{{ user.username }}</span>
               </td>
@@ -144,7 +144,7 @@
         <tr *ngFor="let post of dashboard.recentPosts">
           <td>{{ post.username }}</td>
           <td class="col-content">
-            {{ (post.content | slice:0:100) + (post.content.length > 100 ? '...' : '') })}
+            {{ (post.content | slice:0:100) + (post.content.length > 100 ? '...' : '') }}
           </td>
           <td>{{ post.likesCount }}</td>
           <td>{{ post.commentsCount }}</td>

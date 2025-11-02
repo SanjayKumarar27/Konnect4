@@ -37,11 +37,26 @@ export class PostUpdate implements OnInit {
     const id = this.route.snapshot.paramMap.get('postId');
     if (id) {
       this.postId = Number(id);
+      this.loadPostData(); // ✅ Load existing post data
     }
     this.emojiSub = this.emojiInput$.subscribe((emoji) => {
       if (emoji) this.content += emoji;
     });
   }
+
+  loadPostData() {
+    this.postService.getPostById(this.postId,this.userId).subscribe({
+      next: (data) => {
+        this.content = data.content;
+        this.imageUrl = data.imageUrl || '';
+        this.previewUrl = data.imageUrl || null;
+        this.category = data.category || '';
+        this.onContentChange(); // Update remaining characters count
+      },
+      error: (err) => console.error('Failed to load post data', err)
+    });
+  }
+
  ngOnDestroy(): void {
     this.emojiSub?.unsubscribe();
   }
@@ -98,7 +113,8 @@ export class PostUpdate implements OnInit {
 
     const dto: any = {
       content: this.content.trim(),
-      imageUrl: this.imageUrl || this.previewUrl || null
+      imageUrl: this.imageUrl || this.previewUrl || null,
+      category:this.category
     };
 
     this.postService.updatePost(this.postId, dto, this.userId).subscribe({

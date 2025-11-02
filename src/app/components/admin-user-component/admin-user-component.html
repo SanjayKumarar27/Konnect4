@@ -58,10 +58,11 @@
       <!-- AVATAR + ADMIN BADGE -->
       <div class="user-avatar-wrapper">
         <img 
-          [src]="user.profileImageUrl || 'assets/default-avatar.png'" 
+          [src]="user.profileImageUrl || 'https://img.freepik.com/premium-vector/gray-picture-person-with-gray-background_1197690-22.jpg?semt=ais_hybrid&w=740&q=80'"
           alt="@{{ user.username }}" 
           class="user-avatar"
           (error)="onImageError($event)"
+         [routerLink]="['/profile',user.userId]"
         />
         <span *ngIf="user.role === 'Admin'" class="badge-admin">ADMIN</span>
       </div>
@@ -89,7 +90,7 @@
 
       <!-- ACTIONS -->
       <div class="user-actions">
-        <button class="btn btn-view" (click)="selectUser(user)">
+        <button class="btn btn-view" (click)="selectUser(user) ">
           View
         </button>
         <button 
@@ -117,7 +118,7 @@
       <div class="modal-header">
         <div class="profile-avatar-large">
           <img 
-            [src]="selectedUser.profileImageUrl || 'assets/default-avatar.png'" 
+            [src]="selectedUser.profileImageUrl|| 'https://img.freepik.com/premium-vector/gray-picture-person-with-gray-background_1197690-22.jpg?semt=ais_hybrid&w=740&q=80'"
             alt="@{{ selectedUser.username }}" 
             class="avatar-img"
             (error)="onImageError($event)"

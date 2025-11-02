@@ -11,7 +11,7 @@
         (input)="onContentChange()"
       > 
     </textarea>
-    <div class="absolute right-2 bottom-1/2 transform -translate-x-1/2 z-20 ">
+    <div class="absolute right-2 top-1/2 transform -translate-x-1/2 z-20 ">
       <k4-emoji-picker  [emojiInput$]="emojiInput$"></k4-emoji-picker>
     </div>
 
@@ -57,11 +57,14 @@
     </div> -->
 
     <div class="right-actions">
-      <button class="post-btn" [disabled]="!canPost()" (click)="onSubmit()">Post</button>
+      <button class="post-btn" [disabled]="!canPost()" (click)="onSubmit()">Post  </button>
     </div>
+    
   </div>
+   
 
   <div class="image-preview" *ngIf="previewUrl">
+    
     <img [src]="previewUrl" alt="preview" />
     <button class="remove-preview" (click)="clearImage()">✕</button>
   </div>

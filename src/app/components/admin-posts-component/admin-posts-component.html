@@ -58,20 +58,26 @@
       class="post-card"
       [style.--delay]="i * 0.08 + 's'"
     >
-      <div class="user-image">
-        <img [src]="post.profileImageUrl || 'assets/default-avatar.png'" alt="@{{ post.username }}" />
+       <div class="flex items-center mb-2 ">
+        <img class="w-10 h-10 rounded-full border border-indigo-300"
+             src="https://ui-avatars.com/api/?name={{post.username}}" [routerLink]="['/profile',post.userId]" />
+        <div>
+          <div class="font-semibold text-gray-800">
+            {{ post.username ?? 'Anonymous' }}
+          </div>
+          <div class="text-xs text-gray-400">
+            {{ post.createdAt | date:'medium' }}
+          </div>
+        </div>  
       </div>
 
+
       <div class="post-content">
-        {{ (post.content | slice:0:150) + (post.content.length > 150 ? '...' : '') }}
+      {{ (post.content | slice:0:100) + (post.content.length > 100 ? '...' : '') }}
       </div>
        <img *ngIf="post.imageUrl" 
          [src]="post.imageUrl" 
          class="mt-3 rounded-xl w-full max-h-80 object-contain shadow-sm" />
-      <div class="post-stats">
-        <span><i class="fa fa-thumbs-up"></i> {{ post.likesCount }}</span>
-        <span><i class="fa fa-comment"></i> {{ post.commentsCount }}</span>
-      </div>
 
         <div class="stats">
           <span class="stat-item">Likes {{ post.likesCount }}</span>
@@ -118,4 +124,3 @@
       </button>
     </div>
   </div>
-</div>
