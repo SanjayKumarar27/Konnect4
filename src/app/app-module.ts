@@ -53,8 +53,7 @@ import { JwtInterceptor } from './jwt-interceptor-interceptor';
     Explore,
     AdminDashboardComponent,
     AdminUserComponent,
-    AdminPostsComponent,
-    Testcomponents
+    AdminPostsComponent
   ],
   imports: [
     BrowserModule,

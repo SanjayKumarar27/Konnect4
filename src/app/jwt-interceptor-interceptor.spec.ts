@@ -1,14 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { jwtInterceptorInterceptor } from './jwt-interceptor-interceptor';
+import { JwtInterceptor } from './jwt-interceptor-interceptor';
 
-describe('jwtInterceptorInterceptor', () => {
-  const interceptor: HttpInterceptorFn = (req, next) => 
-    TestBed.runInInjectionContext(() => jwtInterceptorInterceptor(req, next));
+describe('JwtInterceptor', () => {
+  let interceptor: JwtInterceptor;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      providers: [JwtInterceptor]
+    });
+    interceptor = TestBed.inject(JwtInterceptor);
   });
 
   it('should be created', () => {

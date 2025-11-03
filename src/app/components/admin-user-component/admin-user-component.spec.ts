@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
 
 import { AdminUserComponent } from './admin-user-component';
 
@@ -8,7 +10,8 @@ describe('AdminUserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AdminUserComponent]
+      imports: [HttpClientTestingModule, FormsModule],
+      declarations: [AdminUserComponent],
     })
     .compileComponents();
 
