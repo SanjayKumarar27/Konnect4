@@ -31,6 +31,9 @@ describe('AuthService', () => {
 
   it('should return true if user is authenticated (user exists in localStorage)', () => {
     localStorage.setItem('user', JSON.stringify({ id: 1, username: 'test' }));
+    localStorage.setItem('auth_token', JSON.stringify({ token: 'fake-token' }));
+    // Manually trigger token loading after setting it in localStorage for the test
+    (service as any).loadToken();
     expect(service.isAuthenticated()).toBeTrue();
   });
 
@@ -42,14 +45,16 @@ describe('AuthService', () => {
   it('should call login() and set user in localStorage on success', () => {
     const loginData = { email: 'test@example.com', password: 'password123' };
     const mockResponse = {
-      user: { id: 1, email: 'test@example.com', username: 'testuser', fullName: 'Test User' }
+      user: { userId: 1, email: 'test@example.com', username: 'testuser', fullName: 'Test User', role: 'User' },
+      token: 'fake-jwt-token'
     };
 
     spyOn(service['loggedIn'], 'next'); // Spy on BehaviorSubject to check its state change
 
     service.login(loginData).subscribe((response) => {
-      expect(response.user).toEqual(mockResponse.user);
-      expect(localStorage.getItem('user')).toEqual(JSON.stringify(mockResponse.user));
+      const expectedUser = { userId: 1, email: 'test@example.com', username: 'testuser', fullName: 'Test User', role: 'User' };
+      expect(response.user).toEqual(expectedUser);
+      expect(localStorage.getItem('user')).toEqual(JSON.stringify(expectedUser));
       expect(service['loggedIn'].next).toHaveBeenCalledWith(true);
     });
 
@@ -77,6 +82,7 @@ describe('AuthService', () => {
   it('should call logout() and remove user from localStorage', () => {
   // Mock logged-in user in localStorage
   localStorage.setItem('user', JSON.stringify({ id: 1, username: 'testuser' }));
+  localStorage.setItem('auth_token', JSON.stringify({ token: 'fake-token' }));
 
   // Spy on BehaviorSubject to track the change in login state
   const loggedInSpy = spyOn(service['loggedIn'], 'next').and.callThrough();
@@ -89,17 +95,18 @@ describe('AuthService', () => {
 
   // Assert that the user was removed from localStorage
   expect(localStorage.getItem('user')).toBeNull();
+  expect(localStorage.getItem('auth_token')).toBeNull();
 
   // Assert that loggedIn.next was called with false to indicate logout
   expect(loggedInSpy).toHaveBeenCalledWith(false);
 
   // Assert that the logout message was logged
-  expect(console.log).toHaveBeenCalledWith('AuthService: Logged out');
+  expect(console.log).toHaveBeenCalledWith('🚪 Logged out - Token cleared');
 });
 
 
   it('should return current logged-in user using getCurrentUser()', () => {
-    const mockUser = { id: 1, username: 'testuser', email: 'test@example.com' };
+    const mockUser = { userId: 1, username: 'testuser', email: 'test@example.com' };
     localStorage.setItem('user', JSON.stringify(mockUser));
 
     const currentUser = service.getCurrentUser();

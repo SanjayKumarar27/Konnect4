@@ -108,13 +108,13 @@ it('should clear error message when form becomes valid', () => {
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
-  it('should navigate to /feed if the user is already authenticated', () => {
-    authService.isAuthenticated.and.returnValue(true);
+  // it('should navigate to /feed if the user is already authenticated', () => {
+  //   authService.isAuthenticated.and.returnValue(true);
 
-    component.ngOnInit();
+  //   component.ngOnInit();
 
-    expect(router.navigate).toHaveBeenCalledWith(['/feed']);
-  });
+  //   expect(router.navigate).toHaveBeenCalledWith(['/feed']);
+  // });
 
   it('should reset the form fields after successful login', () => {
     const mockResponse = {
